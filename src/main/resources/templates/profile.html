@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+        <meta charset="UTF-8" />
+        <title>Profile page</title>
+    </head>
+    <body>
+        <!--TODO - käyttäjän oma sivu, modelina saatava käyttäjä-->
+        <h2>Profile</h2>
+        
+        <p>Tervetuloa <span th:text="${profile}">profiili</span>!</p>
+        
+        <div>
+            <form method="post" th:action="@{/logout}"><input type="submit" name="logout" value="Logout"/></form>
+        </div>
+        
+    </body>
+</html>

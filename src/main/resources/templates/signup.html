@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+        <meta charset="UTF-8" />
+        <title>Sign Up!</title>
+    </head>
+    <body>
+        <!--TODO - Lisää about-teksti sivustosta-->
+        <h2>Sign Up!</h2>
+        <!--TODO - poista alla oleva lista-->
+        <ol>
+            <li th:each="account : ${accounts}">
+                <span th:text="${account.profile}">msg</span>
+            </li>
+        </ol>
+        <!--TODO - validointi kuntoon lomakkeeseen-->
+        <form method="POST" th:action="@{/signup}">
+            <input type="text" name="username" placeholder="username"/>
+            <input type="password" name="password" placeholder="password"/>
+            <input type="text" name="name" placeholder="name"/>
+            <input type="text" name="profile" placeholder="profile name"/>
+            <input type="submit" value="Add new account!"/>
+        </form>
+    </body>
+</html>
