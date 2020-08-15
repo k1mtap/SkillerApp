@@ -3,23 +3,38 @@
     <head lang="en">
         <meta charset="UTF-8" />
         <title>Sign Up!</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"/>
     </head>
     <body>
-        <!--TODO - Lisää about-teksti sivustosta-->
-        <h2>Sign Up!</h2>
-        <!--TODO - poista alla oleva lista-->
-        <ol>
-            <li th:each="account : ${accounts}">
-                <span th:text="${account.profile}">msg</span>
-            </li>
-        </ol>
-        <!--TODO - validointi kuntoon lomakkeeseen-->
-        <form method="POST" th:action="@{/signup}">
-            <input type="text" name="username" placeholder="username"/>
-            <input type="password" name="password" placeholder="password"/>
-            <input type="text" name="name" placeholder="name"/>
-            <input type="text" name="profile" placeholder="profile name"/>
-            <input type="submit" value="Add new account!"/>
-        </form>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col col-auto">
+                    <h2>Sign Up!</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col col-auto">
+                    <form class="col col-auto" th:action="@{/signup}" th:object="${account}" method="POST">
+                        <div class="form-group">
+                            <input type="text" class="form-control" th:field="*{username}" placeholder="username"/>
+                            <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="form-text text-danger">virheviesti</small>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" th:field="*{password}" placeholder="password"/>
+                            <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="form-text text-danger">virheviesti</small>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" th:field="*{name}" placeholder="name"/>
+                            <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="form-text text-danger">virheviesti</small>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" th:field="*{profile}" placeholder="profile name"/>
+                            <small th:if="${#fields.hasErrors('profile')}" th:errors="*{profile}" class="form-text text-danger">virheviesti</small>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Sign up!</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
