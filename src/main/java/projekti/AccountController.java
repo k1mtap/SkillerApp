@@ -19,10 +19,10 @@ public class AccountController {
 
     @Autowired
     private AccountRepository accountRepository;
-
+    @Autowired
+    private SkillRepository skillRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private AccountService accountService;
 
@@ -70,14 +70,17 @@ public class AccountController {
         return "redirect:/profiles/" + account.getProfile();
     }
 
-    @GetMapping("/profile")
+    @GetMapping("/profiles")
     public String authentication() {
         return "redirect:/profiles/" + accountService.getCurrentUser().getProfile();
     }
 
     @GetMapping("/profiles/{profile}")
     public String getProfile(Model model, @PathVariable String profile) {
-        model.addAttribute("profile", accountRepository.findByProfile(profile).getProfile());
+        model.addAttribute("account", accountRepository.findByProfile(profile));
+        model.addAttribute("authenticatedUser", accountService.getCurrentUser());
         return "profile";
     }
+    
+    
 }

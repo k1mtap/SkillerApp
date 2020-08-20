@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -36,4 +37,7 @@ public class Account extends AbstractPersistable<Long>{
     
     @OneToMany
     private List<Skill> skills = new ArrayList<>();
+    
+    @OneToOne
+    private Image image;
 }

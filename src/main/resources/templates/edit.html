@@ -5,11 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>Profile page</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"/>
-        <link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}"/>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous" defer></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous" defer></script>
-        <script type="text/javascript" th:src="@{/javascript/profile.js}" defer></script>
     </head>
     <body>
         <nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -44,27 +42,36 @@
         </nav>
         <!--TODO - käyttäjän oma sivu, modelina saatava käyttäjä-->
         <div class="container">
-            <h2>Profile page</h2>
-            
-            
-            
+            <h2>Profile</h2>
+
             <p>Tervetuloa <span th:text="${account.profile}">profiili</span>!</p>
             
-            <div th:if="${authenticatedUser == account}">
-                <a th:href="@{/profiles/{profile}/edit(profile=${account.profile})}"><button class="btn btn-sm btn-success">edit</button></a>
+            <div>
+                <a th:href="@{/profiles/{profile}(profile=${account.profile})}"><button class="btn btn-sm btn-success">back</button></a>
             </div>
             
             <div class="card" style="width: 18rem;">
-                <!--TODO - tässä on toistoa edit sivun kanssa, tee fragment-->
                 <img th:if="${account.image != null}" th:src="@{/profiles/{profile}/image/content(profile=${account.profile})}" width="200" height="200">
                 <img th:unless="${account.image != null}" th:src="@{/images/no_image.png}" width="200" height="200">
+                
+                    
+                    <form th:action="@{/profiles/{profile}/image(profile=${account.profile})}" method="POST" enctype="multipart/form-data">
+                        <input type="file" name="image"/>
+                        <button class="btn btn-sm btn-primary">add image</button>
+                    </form>
+                    
                     <div class="card-body">
                         <h5 class="card-title">Skills</h5>
-                        <ul id="skillList">
+                        <ul>
                             <li th:each="skill : ${account.skills}">
                                 <span th:text="${skill.content}">skills goes here</span>
                             </li>
                         </ul>
+                        <form th:action="@{/profiles/{profile}/skill(profile=${account.profile})}" th:object="${skill}" method="POST">
+                            <input type="text" th:field="*{content}" placeholder="add a skill"/>
+                            <small th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="form-text text-danger">virheviesti</small>
+                            <input type="submit" value="add"/>
+                        </form>
                     </div>
             </div>
         </div>

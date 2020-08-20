@@ -36,7 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin().permitAll()
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/profile")
+                .defaultSuccessUrl("/profiles")
                 // TODO - tarvitaan login error ja logout sivut
                 .and()
                 .logout().permitAll();

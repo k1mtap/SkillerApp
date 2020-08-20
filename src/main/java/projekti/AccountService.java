@@ -17,4 +17,14 @@ public class AccountService {
         Account currentUser = accountRepository.findByUsername(auth.getName());
         return currentUser;
     }
+    
+    public String getProfile(String profile) {
+        return accountRepository.findByProfile(profile).getProfile();
+    }
+    
+    public void addSkillAndSave(Skill skill) {
+        Account user = getCurrentUser();
+        user.getSkills().add(skill);
+        accountRepository.save(user);
+    }
 }
