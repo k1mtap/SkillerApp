@@ -1,7 +1,10 @@
 
 package projekti;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -19,4 +22,6 @@ public class Skill extends AbstractPersistable<Long> {
     @Size(min = 3, max = 30)
     private String content;
     
+    @ManyToMany
+    private List<Account> praises = new ArrayList<>();
 }

@@ -45,26 +45,33 @@
         <!--TODO - käyttäjän oma sivu, modelina saatava käyttäjä-->
         <div class="container">
             <h2>Profile page</h2>
-            
-            
-            
+
+
+
             <p>Tervetuloa <span th:text="${account.profile}">profiili</span>!</p>
-            
+
             <div th:if="${authenticatedUser == account}">
                 <a th:href="@{/profiles/{profile}/edit(profile=${account.profile})}"><button class="btn btn-sm btn-success">edit</button></a>
             </div>
-            
+
             <div class="card" style="width: 18rem;">
                 <!--TODO - tässä on toistoa edit sivun kanssa, tee fragment-->
                 <img th:if="${account.image != null}" th:src="@{/profiles/{profile}/image/content(profile=${account.profile})}" width="200" height="200">
-                <img th:unless="${account.image != null}" th:src="@{/images/no_image.png}" width="200" height="200">
+                    <img th:unless="${account.image != null}" th:src="@{/images/no_image.png}" width="200" height="200"/>
                     <div class="card-body">
                         <h5 class="card-title">Skills</h5>
-                        <ul id="skillList">
-                            <li th:each="skill : ${account.skills}">
-                                <span th:text="${skill.content}">skills goes here</span>
-                            </li>
-                        </ul>
+                        <table id="skillTable" class="table table-borderless">
+                            <tbody>
+                                <tr th:each="skill : ${account.skills}">
+                                    <td th:text="${skill.content}">skill</td>
+                                    <td>
+                                        <!--TODO - tähän joku icon (peukku tms), mitä painamalla kehu lisätään-->
+                                        <span th:text="${#lists.size(skill.praises)}">praises</span>
+                                        <a th:href="@{/profiles/{profile}/skills/{id}/praise(profile = ${account.profile}, id = ${skill.id})}"><span>kehu</span></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
             </div>
         </div>

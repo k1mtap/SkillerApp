@@ -4,6 +4,7 @@ package projekti;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Lob;
 //import javax.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,6 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Image extends AbstractPersistable<Long>{
     
     // TODO - @Lob ei toimi Herokussa
-//    @Lob
     @Basic(fetch = FetchType.LAZY)
     private byte[] content;
 }
