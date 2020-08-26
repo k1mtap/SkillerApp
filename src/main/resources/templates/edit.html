@@ -1,66 +1,31 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head lang="en">
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <title>Profile page</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"/>
-        <link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}"/>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous" defer></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous" defer></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous" defer></script>
+    <head th:replace="fragments/layout :: head" lang="en">
+        <title>Edit profile</title>
     </head>
     <body>
-        <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <div class="container">
-                <a class="navbar-brand" href="#">Navbar</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <div th:replace="fragments/layout :: header"></div>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Wall <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Feed</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                    </ul>
-                    <div class="navbar-text">
-                        <!--TODO - Logout logo ja <a href="@{/logout}"> -->
-                        <form method="post" th:action="@{/logout}"><input type="submit" name="logout" value="Logout"/></form>
-                    </div>
-                </div>
-
-            </div>
-        </nav>
         <!--TODO - käyttäjän oma sivu, modelina saatava käyttäjä-->
         <div class="container">
             <h2>Profile</h2>
 
-            <p>Tervetuloa <span th:text="${account.profile}">profiili</span>!</p>
+            <p>Tervetuloa <span th:text="${currentAccount.profile}">profiili</span>!</p>
 
             <div>
-                <a th:href="@{/profiles/{profile}(profile=${account.profile})}"><button class="btn btn-sm btn-success">back</button></a>
+                <a th:href="@{/profiles/{profile}(profile=${currentAccount.profile})}"><button class="btn btn-sm btn-success">back</button></a>
             </div>
 
             <div class="card" style="width: 18rem;">
                 <div>
-                    <img th:if="${account.image != null}" th:src="@{/profiles/{profile}/image/content(profile=${account.profile})}" width="200" height="200"/>
-                    <img th:unless="${account.image != null}" th:src="@{/images/no_image.png}" width="200" height="200"/>
-                    <div th:if="${account.image != null}">
-                        <a th:href="@{/profiles/{profile}/image/delete(profile=${account.profile})}"><button class="btn btn-sm btn-danger">delete image</button></a>
+                    <img th:if="${currentAccount.image != null}" th:src="@{/profiles/{profile}/image/content(profile=${currentAccount.profile})}" width="200" height="200"/>
+                    <img th:unless="${currentAccount.image != null}" th:src="@{/images/no_image.png}" width="200" height="200"/>
+                    <div th:if="${currentAccount.image != null}">
+                        <a th:href="@{/profiles/{profile}/image/delete(profile=${currentAccount.profile})}"><button class="btn btn-sm btn-danger">delete image</button></a>
                     </div>
                 </div>
-                <div th:if="${account.image == null}">
-                    <form th:action="@{/profiles/{profile}/image(profile=${account.profile})}" method="POST" enctype="multipart/form-data">
+                <div th:if="${currentAccount.image == null}">
+                    <form th:action="@{/profiles/{profile}/image(profile=${currentAccount.profile})}" method="POST" enctype="multipart/form-data">
                         <input type="file" name="image"/>
                         <button class="btn btn-sm btn-primary">add image</button>
                     </form>
@@ -70,15 +35,19 @@
                     <h5 class="card-title">Skills</h5>
                     <table id="skillTable" class="table table-borderless">
                         <tbody>
-                            <tr th:each="skill : ${account.skills}">
+                            <!--TODO - eri kuin profiilissa.. onko ok?-->
+                            <tr th:each="skill : ${currentAccount.skills}">
                                 <td>
-                                    <a th:href="@{/profiles/{profile}/skills/{id}/delete(profile = ${account.profile}, id = ${skill.id})}"><span>del</span></a>
+                                    <!--TODO - fontawesomesta tms icon tähän-->
+                                    <form th:action="@{/profiles/{profile}/skills/{id}/delete(profile = ${currentAccount.profile}, id = ${skill.id})}" th:method="delete">
+                                        <button class="btn btn-sm btn-danger" type="submit">del</button>
+                                    </form> 
                                 </td>
                                 <td th:text="${skill.content}">skill</td>
                             </tr>
                         </tbody>
                     </table>
-                    <form th:action="@{/profiles/{profile}/skills(profile=${account.profile})}" th:object="${skill}" method="POST">
+                    <form th:action="@{/profiles/{profile}/skills(profile=${currentAccount.profile})}" th:object="${skill}" method="POST">
                         <input type="text" th:field="*{content}" placeholder="add a skill"/>
                         <small th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="form-text text-danger">virheviesti</small>
                         <input type="submit" value="add"/>

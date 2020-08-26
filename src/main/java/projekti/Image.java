@@ -18,6 +18,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Image extends AbstractPersistable<Long>{
     
     // TODO - @Lob ei toimi Herokussa
+//    @Lob
     @Basic(fetch = FetchType.LAZY)
     private byte[] content;
 }

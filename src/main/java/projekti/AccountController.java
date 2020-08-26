@@ -1,6 +1,6 @@
 package projekti;
 
-import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AccountController {
@@ -20,11 +21,11 @@ public class AccountController {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
-    private SkillRepository skillRepository;
-    @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private ContactService contactService;
 
     @GetMapping("/login")
     public String showCustomLoginForm() {
@@ -52,9 +53,9 @@ public class AccountController {
             bindingResult.rejectValue("profile", "profile.exist", "Profile already in use");
             return "signup";
         }
-
-        account.setSkills(new ArrayList<>());
-
+        
+        String name = accountService.toTitleCase(account.getName());
+        account.setName(name);
         String password = account.getPassword();
         account.setPassword(passwordEncoder.encode(password));
         accountRepository.save(account);
@@ -70,16 +71,41 @@ public class AccountController {
         return "redirect:/profiles/" + account.getProfile();
     }
 
+    
     @GetMapping("/profiles")
     public String authentication() {
-        return "redirect:/profiles/" + accountService.getCurrentUser().getProfile();
+        return "redirect:/profiles/" + accountService.getCurrentAccount().getProfile();
     }
 
     @GetMapping("/profiles/{profile}")
     public String getProfile(Model model, @PathVariable String profile) {
-        model.addAttribute("account", accountRepository.findByProfile(profile));
-        model.addAttribute("authenticatedUser", accountService.getCurrentUser());
+        
+        Account a = accountService.getUser(profile);
+        Account currentAccount = accountService.getCurrentAccount();
+        
+        model.addAttribute("account", a);
+        model.addAttribute("currentAccount", currentAccount);
+        model.addAttribute("skills", a.getSortedSkills());
+        model.addAttribute("contactDoneOrPending", contactService.contactAlreadyDoneOrPending(currentAccount, a));
+        
         return "profile";
+    }
+    
+//    TODO - KESKEN AINAKIN POLKU
+    @GetMapping("/profiles/search")
+    public String search(Model model, @RequestParam String keyword) {
+        
+        keyword = keyword.toLowerCase();
+        
+        if (keyword != null) {
+            model.addAttribute("accounts", accountService.findByKeyword(keyword));
+        } else {
+            model.addAttribute("accounts", accountService.getAllAccounts());
+        }
+        
+        model.addAttribute("currentAccount", accountService.getCurrentAccount());
+        
+        return "search";
     }
     
     

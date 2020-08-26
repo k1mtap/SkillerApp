@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="fragments/layout :: head" lang="en">
+        <title>Otikko</title>
+    </head>
+    <body>
+        <div th:replace="fragments/layout :: header"></div>
+
+        <div class="row justify-content-center">
+            <div class="col col-auto">
+
+                <div>
+                    <table class="table table-borderless">
+                        <tr th:each="account : ${accounts}">
+                            <td>
+                                <a th:href="@{/profiles/{profile}/(profile = ${account.profile})}">
+                                    <span th:text="${account.name}">name</span>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

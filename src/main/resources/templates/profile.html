@@ -1,57 +1,28 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head lang="en">
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <head th:replace="fragments/layout :: head" lang="en">
         <title>Profile page</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"/>
-        <link rel="stylesheet" type="text/css" th:href="@{/css/profile.css}"/>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous" defer></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous" defer></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous" defer></script>
-        <script type="text/javascript" th:src="@{/javascript/profile.js}" defer></script>
     </head>
     <body>
-        <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <div class="container">
-                <a class="navbar-brand" href="#">Navbar</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Wall <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Feed</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                    </ul>
-                    <div class="navbar-text">
-                        <!--TODO - Logout logo ja <a href="@{/logout}"> -->
-                        <form method="post" th:action="@{/logout}"><input type="submit" name="logout" value="Logout"/></form>
-                    </div>
-                </div>
-
-            </div>
-        </nav>
-        <!--TODO - käyttäjän oma sivu, modelina saatava käyttäjä-->
+        <div th:replace="fragments/layout :: header"></div>
+        
+        <!--TODO - käyttäjän oma sivu, modelina saatava käyttäjän nimi-->
         <div class="container">
-            <h2>Profile page</h2>
+            <!--TODO - sivun otsikossa käyttäjän nimi, ei profiilinimi-->
+            <h2>Profile page of <span th:text="${account.name}">name</span></h2>
+            <!--TODO - tämä näkyviin vain, mikäli ei ole entuudestaan contactia tai contactipyyntöjä kumpaankaan suuntaan-->
+            <div th:if="${currentAccount != account && !contactDoneOrPending}">
+                <a th:href="@{/profiles/{profile}/contacts/send_contact_request(profile=${account.profile})}">
+                    <button class="btn btn-sm btn-primary">Make contact!</button>
+                </a>
+            </div>
 
 
 
-            <p>Tervetuloa <span th:text="${account.profile}">profiili</span>!</p>
+            <p>Tervetuloa <span th:text="${account.name}">name</span>!</p>
 
-            <div th:if="${authenticatedUser == account}">
-                <a th:href="@{/profiles/{profile}/edit(profile=${account.profile})}"><button class="btn btn-sm btn-success">edit</button></a>
+            <div>
+                <a th:if="${currentAccount == account}" th:href="@{/profiles/{profile}/edit(profile=${account.profile})}"><button class="btn btn-sm btn-success">edit</button></a>
             </div>
 
             <div class="card" style="width: 18rem;">
@@ -62,9 +33,9 @@
                         <h5 class="card-title">Skills</h5>
                         <table id="skillTable" class="table table-borderless">
                             <tbody>
-                                <tr th:each="skill : ${account.skills}">
+                                <tr th:each="skill : ${skills}">
                                     <td th:text="${skill.content}">skill</td>
-                                    <td>
+                                    <td class="praises">
                                         <!--TODO - tähän joku icon (peukku tms), mitä painamalla kehu lisätään-->
                                         <span th:text="${#lists.size(skill.praises)}">praises</span>
                                         <a th:href="@{/profiles/{profile}/skills/{id}/praise(profile = ${account.profile}, id = ${skill.id})}"><span>kehu</span></a>

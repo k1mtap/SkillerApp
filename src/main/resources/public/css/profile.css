@@ -2,6 +2,10 @@
     color: green;
 }
 
+.fourthSkill {
+    border-top: 1px solid black;
+}
+
 #skillTable td {
     padding: 0;
 }
