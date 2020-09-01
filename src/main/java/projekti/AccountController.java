@@ -43,17 +43,18 @@ public class AccountController {
         if (bindingResult.hasErrors()) {
             return "signup";
         }
-
+        // TODO - pois kokonaan, henkilöillä saa olla sama username ja sama name, ainoastaan profile pitää olla yksilöllinen
         if (accountRepository.findByUsername(account.getUsername()) != null) {
             bindingResult.rejectValue("username", "username.exist", "Username already in use");
             return "signup";
         }
 
-        if (accountRepository.findByProfile(account.getProfile()) != null) {
+        if (accountService.getUser(account.getProfile()) != null) {
             bindingResult.rejectValue("profile", "profile.exist", "Profile already in use");
             return "signup";
         }
         
+//        TODO - accountServiceen (esim modifyAndLogIn() )
         String name = accountService.toTitleCase(account.getName());
         account.setName(name);
         String password = account.getPassword();
@@ -68,6 +69,7 @@ public class AccountController {
             return "redirect:/login";
         }
 
+//        TODO - redirect:/profiles parempi?
         return "redirect:/profiles/" + account.getProfile();
     }
 
@@ -91,7 +93,7 @@ public class AccountController {
         return "profile";
     }
     
-//    TODO - KESKEN AINAKIN POLKU
+//    TODO - accountServiceen
     @GetMapping("/profiles/search")
     public String search(Model model, @RequestParam String keyword) {
         

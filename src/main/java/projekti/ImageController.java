@@ -40,6 +40,7 @@ public class ImageController {
         return "redirect:/profiles/" + profile + "/edit";
     }
     
+//    TODO - muuta @DeleteMapping (html:ään form ja method="DELETE") ja tarkista polku, pelkkä /image?
     @GetMapping("/profiles/{profile}/image/delete")
     public String deleteImage(@PathVariable String profile) throws IOException {
 

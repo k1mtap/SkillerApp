@@ -55,7 +55,7 @@ public class SkillController {
         return "redirect:/profiles/" + profile + "/edit";
     }
 
-    // TODO - yksittäisen skillin poistaminen skillserviceen
+    // TODO - yksittäisen skillin poistaminen skillserviceen, lisäksi, tarvitaanko polkuun edes /delete? tarkista RESTful routing
     @Transactional
     @DeleteMapping("/profiles/{profile}/skills/{id}/delete")
     public String deleteSkill(@PathVariable String profile, @PathVariable Long id) {

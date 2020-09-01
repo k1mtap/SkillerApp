@@ -17,7 +17,7 @@ public class ContactController {
 
     @Autowired
     private AccountService accountService;
-
+    
     @GetMapping("/profiles/{profile}/contacts")
     public String getAllContacts(Model model, @PathVariable String profile) {
 
@@ -59,7 +59,8 @@ public class ContactController {
         
         return "redirect:/profiles/" + profile + "/contacts";
     }
-
+    
+//    TODO - tarkista polku, riittääkö pelkkä /contacts/{id} ? RESTful routing
     @DeleteMapping("/profiles/{profile}/contacts/{id}/delete")
     public String deleteContact(@PathVariable String profile, @PathVariable Long id) {
         

@@ -45,6 +45,7 @@ public class Account extends AbstractPersistable<Long>{
     @OneToOne
     private Image image;
     
+//    TODO - keksi parempi nimi kuin contacts, esim doneContacts, tai vaihtoehtoisesti muuta Contact-entiteetin nimeä esim Connecting tms
     @JoinTable(
             name = "Contacts",
             joinColumns = @JoinColumn(name = "account1_id", referencedColumnName = "id"),

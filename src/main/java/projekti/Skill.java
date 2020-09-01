@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -25,20 +26,19 @@ public class Skill extends AbstractPersistable<Long> implements Comparable<Skill
     @Size(min = 1, max = 30)
     private String content;
     
-//    TODO - tarvitaanko?
+//    TODO - tarvitaanko? Kokeile skillien järjestäminen tietokannassa, jos on tehokkaampi/nopeampi
     @ManyToOne
     private Account owner;
     
     @ManyToMany
     @JoinTable(
-        name="praised_skills",
+        name="skill_praise",
         joinColumns=
-            @JoinColumn(name="skill", referencedColumnName="id"),
+            @JoinColumn(name="skill_id", referencedColumnName="id"),
         inverseJoinColumns=
-            @JoinColumn(name="praised_by_account", referencedColumnName="id"))
+            @JoinColumn(name="praised_by_account_id", referencedColumnName="id"))
     private List<Account> praises = new ArrayList<>();
 
-//    TODO - järjestäminen toissijaisesti nimen mukaan
     @Override
     public int compareTo(Skill s) {
         if (s.getPraises().size() == this.getPraises().size()) {
