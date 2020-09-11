@@ -23,7 +23,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class Skill extends AbstractPersistable<Long> implements Comparable<Skill>{
     
     @NotEmpty
-    @Size(min = 1, max = 30)
+    @Size(min = 2, max = 15)
     private String content;
     
 //    TODO - tarvitaanko? Kokeile skillien järjestäminen tietokannassa, jos on tehokkaampi/nopeampi

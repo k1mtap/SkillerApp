@@ -20,18 +20,19 @@
                             <!--TODO - <span th:text="'at ' + ${#temporals.format(message.messageTimeStamp, 'dd.MM.yyyy HH:mm')} + ':'" class="font-weight-light"></span> --> 
                         </div>
                         <div class="card-body">
-                            <p class="card-text" th:text="${message.content}">content</p>
+                            <p class="card-text" th:id="${message.id}" th:text="${message.content}">content</p>
                             <div class="text-right">
-                                <!--                                TODO - jos käyttää formia, täytyy pakottaa blockline tms css:stä
-                                                                <form th:if="${currentAccount == message.account}" th:action="@{/messages/{id}(id=${message.id})}" method="DELETE">
-                                                                    <button class="btn btn-sm btn-danger">delete</button>
-                                                                </form>-->
-                                <a th:if="${currentAccount == message.account}" th:href="@{/messages/{id}(id=${message.id})}" class="btn btn-sm btn-danger">delete</a>
-                                <form th:action="@{/messages/{id}/comments(id = ${message.id})}" method="POST">
+<!--                                TODO - jos käyttää formia, täytyy pakottaa blockline tms css:stä
+                                <form th:if="${currentAccount == message.account}" th:action="@{/messages/{id}(id=${message.id})}" method="DELETE">
+                                    <button class="btn btn-sm btn-danger">delete</button>
+                                </form>-->
+                                <a th:if="${currentAccount == message.account}" th:href="@{/{currentPage}/messages/{id}(currentPage = ${currentPage}, id = ${message.id})}" class="btn btn-sm btn-danger">delete</a>
+                                <form th:action="@{/{currentPage}/messages/{id}/comments(currentPage = ${currentPage}, id = ${message.id})}" method="POST">
                                     <input type="text" name="content" placeholder="add a comment"/>
                                     <button class="btn btn-sm btn-primary">add</button>
                                 </form>
-                                <a th:href="@{/messages/{id}/like(id = ${message.id})}" class="btn btn-sm btn-primary">like</a>
+                                <!--TODO - saako linkitettyä ..like#{id}-->
+                                <a th:href="@{/{currentPage}/messages/{id}/like(currentPage = ${currentPage}, id = ${message.id})}" class="btn btn-sm btn-primary">like</a>
                                 <span th:text="${#lists.size(message.likes)}">likes</span>
                                 <footer class="blockquote-footer">date</footer>
                             </div>

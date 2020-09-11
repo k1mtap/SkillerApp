@@ -94,7 +94,7 @@ public class AccountController {
     }
     
 //    TODO - accountServiceen
-    @GetMapping("/profiles/search")
+    @GetMapping("/search")
     public String search(Model model, @RequestParam String keyword) {
         
         keyword = keyword.toLowerCase();
@@ -104,6 +104,14 @@ public class AccountController {
         } else {
             model.addAttribute("accounts", accountService.getAllAccounts());
         }
+        
+        model.addAttribute("currentAccount", accountService.getCurrentAccount());
+        
+        return "search";
+    }
+    
+    @GetMapping("/searchpage")
+    public String searchPage(Model model) {
         
         model.addAttribute("currentAccount", accountService.getCurrentAccount());
         

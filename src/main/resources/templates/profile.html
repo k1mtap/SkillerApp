@@ -4,47 +4,57 @@
         <title>Profile page</title>
     </head>
     <body>
-        <div th:replace="fragments/layout :: header"></div>
-        
-        <!--TODO - käyttäjän oma sivu, modelina saatava käyttäjän nimi-->
         <div class="container">
-            <!--TODO - sivun otsikossa käyttäjän nimi, ei profiilinimi-->
-            <h2>Profile page of <span th:text="${account.name}">name</span></h2>
-            <!--TODO - tämä näkyviin vain, mikäli ei ole entuudestaan contactia tai contactipyyntöjä kumpaankaan suuntaan-->
-            <div th:if="${currentAccount != account && !contactDoneOrPending}">
-                <a th:href="@{/profiles/{profile}/contacts/send_contact_request(profile=${account.profile})}">
-                    <button class="btn btn-sm btn-primary">Make contact!</button>
-                </a>
-            </div>
+            <header th:replace="fragments/layout :: header"></header>
 
+            <main>
+                <div class="col-11 profile">
 
-
-            <p>Tervetuloa <span th:text="${account.name}">name</span>!</p>
-
-            <div>
-                <a th:if="${currentAccount == account}" th:href="@{/profiles/{profile}/edit(profile=${account.profile})}"><button class="btn btn-sm btn-success">edit</button></a>
-            </div>
-
-            <div class="card" style="width: 18rem;">
-                <!--TODO - tässä on toistoa edit sivun kanssa, tee fragment-->
-                <img th:if="${account.image != null}" th:src="@{/profiles/{profile}/image/content(profile=${account.profile})}" width="200" height="200">
-                    <img th:unless="${account.image != null}" th:src="@{/images/no_image.png}" width="200" height="200"/>
-                    <div class="card-body">
-                        <h5 class="card-title">Skills</h5>
-                        <table id="skillTable" class="table table-borderless">
-                            <tbody>
-                                <tr th:each="skill : ${skills}">
-                                    <td th:text="${skill.content}">skill</td>
-                                    <td class="praises">
-                                        <!--TODO - tähän joku icon (peukku tms), mitä painamalla kehu lisätään-->
-                                        <span th:text="${#lists.size(skill.praises)}">praises</span>
-                                        <a th:href="@{/profiles/{profile}/skills/{id}/praise(profile = ${account.profile}, id = ${skill.id})}"><span>kehu</span></a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <!--OTSAKE-->
+                    <div class="row align-items-center">
+                        <div class="col-10">
+                            <h1><span th:text="${account.name}">name</span>'s profile</h1>
+                        </div>
+                        <div class="col-2 text-right">
+                            <a th:if="${currentAccount != account && !contactDoneOrPending}" th:href="@{/profiles/{profile}/contacts/send_contact_request(profile=${account.profile})}" title="Send contact request">
+                                <i class="fas fa-user-plus normalButton headerButton"></i>
+                            </a>
+                            <a th:if="${currentAccount == account}" th:href="@{/profiles/{profile}/edit(profile=${account.profile})}" title="Edit your profile">
+                                <i class="fas fa-user-edit normalButton headerButton"></i>
+                            </a>
+                        </div>
                     </div>
-            </div>
+
+                    <!--SISÄLTÖ-->
+                    <div class="row">
+                        <div class="col-5 component d-flex justify-content-center align-items-center">
+                            <!--TODO - toistoa edit sivun kanssa? fragment?-->
+                            <div class="col-7 component">
+                                <img th:if="${account.image != null}" th:src="@{/profiles/{profile}/image/content(profile=${account.profile})}" width="100%"/>
+                                <img th:unless="${account.image != null}" th:src="@{/images/no_image.png}" width="100%"/>
+                            </div>
+                        </div>
+                        <div class="col-7 component d-flex justify-content-center">
+                            <div class="component">
+                                <h2 class="text-center">Skills</h2>
+                                <table class="d-flex justify-content-center" id="skillTable">
+                                    <tbody>
+                                        <tr th:each="skill : ${skills}">
+                                            <td th:text="${skill.content}" class="skill">skill</td>
+                                            <td th:text="${#lists.size(skill.praises)}" class="praises" style="width: 20px;">3</td>
+                                            <td class="praise">
+                                                <a th:if="${skill.praises.contains(currentAccount)}" th:href="@{/profiles/{profile}/skills/{id}/praise(profile = ${account.profile}, id = ${skill.id})}" title="Praise this skill"><i class="fas fa-thumbs-down normalButton"></i></a>
+                                                <a th:unless="${skill.praises.contains(currentAccount)}" th:href="@{/profiles/{profile}/skills/{id}/praise(profile = ${account.profile}, id = ${skill.id})}" title="Praise this skill"><i class="fas fa-thumbs-up normalButton"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
+        <script type="text/javascript" th:src="@{/javascript/profile.js}" defer></script>
     </body>
 </html>

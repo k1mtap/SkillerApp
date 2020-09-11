@@ -4,23 +4,31 @@
         <title>Otikko</title>
     </head>
     <body>
-        <div th:replace="fragments/layout :: header"></div>
+        <div class="container">
+            <header th:replace="fragments/layout :: header"></header>
+            <main>
+                <div class="row justify-content-center">
+                    <div class="col col-auto">
 
-        <div class="row justify-content-center">
-            <div class="col col-auto">
-
-                <div>
-                    <table class="table table-borderless">
-                        <tr th:each="account : ${accounts}">
-                            <td>
-                                <a th:href="@{/profiles/{profile}/(profile = ${account.profile})}">
-                                    <span th:text="${account.name}">name</span>
-                                </a>
-                            </td>
-                        </tr>
-                    </table>
+                        <div>
+                            <form class="form-inline my-2 my-lg-0" th:action="@{/profiles/search}" method="GET">
+                                <input class="form-control mr-sm-2" type="search" name="keyword" placeholder="Search users" size="10"/>
+                                <button class="searchButton"><i class="fas fa-search"></i></button>
+                            </form>
+                            <table class="table table-borderless">
+                                <tr th:each="account : ${accounts}">
+                                    <td>
+                                        <a th:href="@{/profiles/{profile}/(profile = ${account.profile})}">
+                                            <span th:text="${account.name}">name</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </main>
+
         </div>
     </body>
 </html>

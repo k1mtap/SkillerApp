@@ -30,20 +30,25 @@ public class SkillController {
         if (currentAccount == accountService.getUser(profile)) {
             model.addAttribute("account", accountRepository.findByProfile(profile));
             model.addAttribute("currentAccount", accountService.getCurrentAccount());
+            model.addAttribute("skills", currentAccount.getSortedSkills());
             return "edit";
         }
         return "redirect:/profiles/" + profile;
     }
 
     @PostMapping("/profiles/{profile}/skills")
-    public String addSkill(@Valid @ModelAttribute Skill skill, BindingResult bindingResult, @PathVariable String profile) {
+    public String addSkill(@Valid @ModelAttribute Skill skill, BindingResult bindingResult, @PathVariable String profile, Model model) {
+        
         if (bindingResult.hasErrors()) {
-            return "profile";
+            model.addAttribute("account", accountRepository.findByProfile(profile));
+            model.addAttribute("currentAccount", accountService.getCurrentAccount());
+            model.addAttribute("skills", accountService.getCurrentAccount().getSortedSkills());
+            return "edit";
         }
 //        TODO - SkillServiceen
         Account currentAccount = accountService.getCurrentAccount();
 
-        if (!skill.getContent().trim().isEmpty() && !currentAccount.getSkills().contains(skill)) {
+        if (!skill.getContent().trim().isEmpty() && skillRepository.findByContent(skill.getContent()) == null) {
 
             skill.setOwner(currentAccount);
             currentAccount.getSkills().add(skill);
@@ -55,9 +60,9 @@ public class SkillController {
         return "redirect:/profiles/" + profile + "/edit";
     }
 
-    // TODO - yksittäisen skillin poistaminen skillserviceen, lisäksi, tarvitaanko polkuun edes /delete? tarkista RESTful routing
+    // TODO - yksittäisen skillin poistaminen skillserviceen
     @Transactional
-    @DeleteMapping("/profiles/{profile}/skills/{id}/delete")
+    @DeleteMapping("/profiles/{profile}/skills/{id}")
     public String deleteSkill(@PathVariable String profile, @PathVariable Long id) {
 
         Account currentAccount = accountService.getCurrentAccount();
