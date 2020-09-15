@@ -17,9 +17,9 @@ public interface SkillRepository extends JpaRepository<Skill, Long>{
             + "LEFT JOIN Skill_Praise SP "
             + "ON S.id = SP.skill_id "
             + "WHERE S.account_id = :account_id "
-            + "GROUP BY S.content "
+            + "GROUP BY S.id "
             + "ORDER BY COUNT(SP.praised_by_account_id) DESC, S.content", nativeQuery = true)
     List<Skill> findByAccountInOrderDesc(Long account_id);
     
-    
+//    ONKO TÄSSÄ VIRHE, GROUP BY S.CONTENT -> S.ID
 }
