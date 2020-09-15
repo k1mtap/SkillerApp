@@ -1,10 +1,15 @@
+html {
+    height: 100%;
+}
+
 body {
+    /*height: 100%;*/
     background: linear-gradient(to bottom, rgba(225, 231, 224, 0.95) 0%, rgba(106, 176, 164, 0.85) 100%), url(/images/code2.jpg);
     margin: 0;
     padding: 0;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: scroll;
+    background-attachment: fixed;
     background-size: cover;
     color: #2B4560;
     font-family: 'Varela Round', sans-serif;
@@ -27,7 +32,7 @@ span .fas.fa-bars {
     color: #2B4560;
 }
 
-ul {
+#nav-buttons {
     margin: 0;
     padding: 0;
     position: relative;
@@ -35,7 +40,7 @@ ul {
     width: 100%;
 }
 
-ul li {
+#nav-buttons li {
     position: relative;
     list-style: none;
     width: 60px;
@@ -48,12 +53,12 @@ ul li {
     overflow: hidden;
 }
 
-ul li:hover {
+#nav-buttons li:hover {
     background: #2B4560;
     cursor: pointer;
 }
 
-ul li .fas {
+#nav-buttons li .fas {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -63,18 +68,18 @@ ul li .fas {
     transition: .5s;
 }
 
-ul li .fas:nth-child(1) {
+#nav-buttons li .fas:nth-child(1) {
     left: -50%;
     opacity: 1;
 }
 
-ul li:hover .fas:nth-child(1) {
+#nav-buttons li:hover .fas:nth-child(1) {
     left: 50%;
     opacity: 1;
     color: #E1E7E0;
 }
 
-ul li:hover .fas:nth-child(2) {
+#nav-buttons li:hover .fas:nth-child(2) {
     left: 150%;
     opacity: 0;
 }
@@ -90,23 +95,41 @@ ul li:hover .fas:nth-child(2) {
 
 main  {
     margin-top: 8%;
-    margin-bottom: 15%;
+    /*margin-bottom: 15%;*/
 }
 
-.profile {
-    background: #E1E7E0;
+.content-area {
+    background: rgb(225, 231, 224, 0.8);
     border-radius: .25rem;
     box-shadow: 0px 0px 10px -2px rgba(43,69,96,0.61);
     margin: auto;
+    margin-bottom: 30px;
     font-size: 20px;
 }
 
-.profile .row {
+.content-area.login {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.form-input {
+    line-height: normal;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 200px;
+    border: 1px solid #2B4560;
+    border-radius: .25rem;
+    background: transparent;
+}
+
+.content-area .row {
     margin: 0 0 20px 0;
     padding-bottom: 20px;
 }
 
-.profile .col-2.text-right {
+.content-area .col-2.text-right {
     padding: 0;
 }
 
@@ -114,43 +137,45 @@ main  {
     padding: 0;
 }
 
-.profile .addSkill {
+.content-area .addSkill {
     text-align: end;
 }
 
-.profile .addSkill input {
+.content-area .addSkill input {
     background: transparent;
     border: 1px solid #2B4560;
 }
 
-.profile button {
+.content-area button {
     background: transparent;
     border: none;
 }
 
 .normalButton {
     color: #2B4560;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
 }
 
 .normalButton.headerButton {
-    font-size: 2em;
+    font-size: 30px;
 }
 
 .normalButton:hover {
     color: #6AA4B0;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .deleteButton {
     color: #2B4560;
-    font-size: 1.3rem;
+    cursor: pointer;
+    font-size: 1.2rem;
 }
 
 .deleteButton:hover {
-    color: #ff3333;
-    font-size: 1.3rem;
+    color: rgb(255, 21, 46, 0.75);
     cursor: pointer;
+    text-decoration: none;
 }
 
 .inputfile {
@@ -168,24 +193,19 @@ main  {
     display: inline-block;
     cursor: pointer;
     background: transparent;
-    width: 135px;
+    width: 180px;
     border: 1px solid #2B4560;
+    border-radius: .25rem;
 }
 
-/*.inputfile:focus + label,
-.inputfile + label:hover {
-    color: black;
-;
-}*/
 
 .highlight {
-    background: rgb(106, 163, 176, 0.5);
+    background: rgb(106, 163, 176, 0.33);
 }
 .fourthSkill {
     border-top: 1px solid #2B4560;
 }
 
-/*TODO - turha?*/
 #skillTable td {
     padding: 0;
     line-height: 1.8;
@@ -195,24 +215,19 @@ main  {
     width: 200px;
 }
 
-#skillTable .deleteButton {
-    padding: 0;
-}
-
 .skillInput {
-    width: 135px;
+    width: 150px;
     cursor: pointer;
+    border-radius: .25rem;
 }
 
 /* webkit solution */
 ::-webkit-input-placeholder {
-    text-align:right;
     color: #2B4560;
 }
 
 /* mozilla solution */
 input:-moz-placeholder {
-    text-align:right;
     color: #2B4560;
 }
 
@@ -230,5 +245,61 @@ input:-moz-placeholder {
     object-fit: cover;
 }
 
+.contact-name {
+    width: 150px;
+}
 
+.content-center {
+    display: flex;
+    justify-content: center;
+}
 
+.search-input {
+    background: transparent;
+    border: 1px solid #2B4560;
+    border-radius: .25rem;
+    width: 160px;
+}
+
+.message {
+    border: 1px solid rgb(106, 164, 176, 0.85);
+    border-radius: .25rem;
+}
+
+.message-content {
+    border: 1px solid rgb(43, 69, 96, 0);
+    border-radius: .25rem;
+    background: rgb(47, 109, 128, 0.75);
+    margin-bottom: 10px;
+}
+
+.comment-content {
+    border: 1px solid #2B4560;
+    border-radius: .25rem;
+    background: rgb(106, 164, 176, 0.85);
+    margin-bottom: 10px;
+}
+
+#comment-header {
+    left: 8%;
+    font-size: 1rem;
+}
+
+#comment-header .commentButton {
+    font-size: 1rem;
+}
+
+.forum-text {
+    margin: 0;
+}
+
+textarea {
+    resize: none;
+    background: transparent;
+    border: 1px solid #2B4560;
+    border-radius: .25rem;
+}
+
+.text-area {
+    display: flex;
+}

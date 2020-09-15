@@ -26,7 +26,6 @@ public class ContactService {
         Contact contact = new Contact();
         contact.setAskingAccount(askingAccount);
         contact.setTargetAccount(targetAccount);
-//        contact.setApproved(false);
         contactRepository.save(contact);
         
         askingAccount.getSentContacts().add(contact);
@@ -69,13 +68,17 @@ public class ContactService {
     }
     
     public void deleteContact(Long id) {
-        
+        System.out.println("Haetaan currentAccount");
         Account currentAccount = accountService.getCurrentAccount();
+        System.out.println("Haetaan contactAccount");
         Account contactAccount = accountService.getUser(id);
         
+        System.out.println("Poistetaan currentista contact");
         currentAccount.getContacts().remove(contactAccount);
+        System.out.println("Poistetaan contactista current");
         contactAccount.getContacts().remove(currentAccount);
         
+        System.out.println("tallennetaan molemmat");
         accountService.saveAll(currentAccount, contactAccount);
     }
     

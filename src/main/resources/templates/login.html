@@ -4,51 +4,25 @@
         <title>Otsikko</title>
     </head>
     <body>
-        <header>
-            <nav class="navbar navbar-expand-md navbar-light">
-                <div class="container">
-                    <span class="navbar-brand">Site name</span>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
 
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item">
-                                <a class="nav-link disabled" href="#">Profile</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link disabled" href="#">Contacts</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link disabled" href="#">Forum</a>
-                            </li>
-                        </ul>
-                        <form class="form-inline my-2 my-lg-0" th:action="@{/profiles/search}" method="GET">
-                            <input class="form-control mr-sm-2" type="search" name="keyword" placeholder="Search user by name"/>
-                            <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Search</button>
-                        </form>
-                        <div class="navbar-text">
-                            <!--TODO - Logout logo ja <a href="@{/logout}"> -->
-                            <form method="post" th:action="@{/logout}"><input type="submit" name="logout" value="Logout"/></form>
+        <div class="container">
+            <nav th:replace="fragments/layout :: logo"></nav>
+            <main>
+                <div class="col-9 col-sm-8 col-md-7 col-lg-5 col-xl-4 mx-auto content-area login pb-3">
+                    <h1 class="content-center">Login</h1>
+                    <hr/>
+                    <form class="text-center" th:action="@{/login}" method="POST">
+                        <div class="form-group">
+                            <input type="text" class="form-input" name="username" placeholder="username"/>
                         </div>
-                    </div>
-
+                        <div class="form-group">
+                            <input type="password" class="form-input" name="password" placeholder="password"/>
+                        </div>
+                        <button class="normalButton headerButton"><i class="fas fa-sign-in-alt"></i></button>
+                    </form>
                 </div>
-            </nav>
-        </header>
-        
-        <main>
-            <div class="container">
-                <h2>Login</h2>
-
-                <form th:action="@{/login}" method="POST">
-                    <input type="text" name="username" placeholder="username"/>
-                    <input type="password" name="password" placeholder="password"/>
-                    <button class="btn btn-lg btn-success">Login</button>
-                </form>
-            </div>
-        </main>
+            </main>
+        </div>
 
     </body>
 </html>

@@ -18,14 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AccountController {
 
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private AccountService accountService;
-    @Autowired
-    private ContactService contactService;
+    @Autowired private AccountRepository accountRepository;
+    @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private AccountService accountService;
+    @Autowired private SkillService skillService;
+    @Autowired private ContactService contactService;
 
     @GetMapping("/login")
     public String showCustomLoginForm() {
@@ -40,28 +37,29 @@ public class AccountController {
     @PostMapping("/signup")
     public String addNewAccount(@Valid @ModelAttribute Account account, BindingResult bindingResult, HttpServletRequest req) {
 
-        if (bindingResult.hasErrors()) {
-            return "signup";
-        }
-        // TODO - pois kokonaan, henkilöillä saa olla sama username ja sama name, ainoastaan profile pitää olla yksilöllinen
-        if (accountRepository.findByUsername(account.getUsername()) != null) {
-            bindingResult.rejectValue("username", "username.exist", "Username already in use");
+        if (bindingResult.hasErrors()
+                || accountRepository.findByUsername(account.getUsername()) != null
+                || accountService.getUser(account.getProfile()) != null) {
+
+            if (accountRepository.findByUsername(account.getUsername()) != null) {
+                bindingResult.rejectValue("username", "username.exist", "Username already in use");
+            }
+            
+            if (accountService.getUser(account.getProfile()) != null) {
+                bindingResult.rejectValue("profile", "profile.exist", "Profile already in use");
+
+            }
+
             return "signup";
         }
 
-        if (accountService.getUser(account.getProfile()) != null) {
-            bindingResult.rejectValue("profile", "profile.exist", "Profile already in use");
-            return "signup";
-        }
-        
-//        TODO - accountServiceen (esim modifyAndLogIn() )
         String name = accountService.toTitleCase(account.getName());
         account.setName(name);
         String password = account.getPassword();
         account.setPassword(passwordEncoder.encode(password));
         accountRepository.save(account);
 
-        // Kirjataan juuri rekisteröitynyt käyttäjä automaattisesti sisään (huom! salasana syötetään salaamattomana)
+        // Automatically log in the user after sign in. Password is uncrypted.
         try {
             req.login(account.getUsername(), password);
         } catch (ServletException e) {
@@ -73,7 +71,6 @@ public class AccountController {
         return "redirect:/profiles/" + account.getProfile();
     }
 
-    
     @GetMapping("/profiles")
     public String authentication() {
         return "redirect:/profiles/" + accountService.getCurrentAccount().getProfile();
@@ -81,42 +78,40 @@ public class AccountController {
 
     @GetMapping("/profiles/{profile}")
     public String getProfile(Model model, @PathVariable String profile) {
-        
+
         Account a = accountService.getUser(profile);
         Account currentAccount = accountService.getCurrentAccount();
-        
+
         model.addAttribute("account", a);
         model.addAttribute("currentAccount", currentAccount);
-        model.addAttribute("skills", a.getSortedSkills());
+        model.addAttribute("skills", skillService.getSkills(a));
         model.addAttribute("contactDoneOrPending", contactService.contactAlreadyDoneOrPending(currentAccount, a));
-        
+
         return "profile";
     }
-    
-//    TODO - accountServiceen
+
     @GetMapping("/search")
     public String search(Model model, @RequestParam String keyword) {
-        
+
         keyword = keyword.toLowerCase();
-        
+
         if (keyword != null) {
             model.addAttribute("accounts", accountService.findByKeyword(keyword));
         } else {
             model.addAttribute("accounts", accountService.getAllAccounts());
         }
-        
+
         model.addAttribute("currentAccount", accountService.getCurrentAccount());
-        
+
         return "search";
     }
-    
+
     @GetMapping("/searchpage")
     public String searchPage(Model model) {
-        
+
         model.addAttribute("currentAccount", accountService.getCurrentAccount());
-        
+
         return "search";
     }
-    
-    
+
 }

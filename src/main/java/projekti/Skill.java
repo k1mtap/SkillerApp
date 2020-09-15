@@ -8,7 +8,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -20,15 +19,14 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Skill extends AbstractPersistable<Long> implements Comparable<Skill>{
+public class Skill extends AbstractPersistable<Long>{
     
     @NotEmpty
     @Size(min = 2, max = 15)
     private String content;
     
-//    TODO - tarvitaanko? Kokeile skillien järjestäminen tietokannassa, jos on tehokkaampi/nopeampi
     @ManyToOne
-    private Account owner;
+    private Account account;
     
     @ManyToMany
     @JoinTable(
@@ -39,11 +37,4 @@ public class Skill extends AbstractPersistable<Long> implements Comparable<Skill
             @JoinColumn(name="praised_by_account_id", referencedColumnName="id"))
     private List<Account> praises = new ArrayList<>();
 
-    @Override
-    public int compareTo(Skill s) {
-        if (s.getPraises().size() == this.getPraises().size()) {
-            return this.getContent().compareTo(s.getContent());
-        }
-        return s.getPraises().size() - this.getPraises().size();
-    }
 }

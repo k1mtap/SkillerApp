@@ -3,28 +3,33 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
-        <!--TODO - otsikko, screen width kännykälle sopivaksi (tämä kaikkiin sivuihin ja fragmentsiin)-->
         <title>Sivun otsikko</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
         <link rel="stylesheet" type="text/css" th:href="@{/css/landing.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/project.css}"/>
+        <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet"/>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript" defer></script>
     </head>
-    <body>
+    <body style="background: linear-gradient(to bottom, rgba(225, 231, 224, 0.95) 0%, rgba(106, 176, 164, 0.85) 100%);">
 
         <!--TODO - RESPONSIVE PAGE-->
-
         <div class="container">
-            <div id="landing-header">
-                <h1>Welcome</h1>
-                <div class="col-3 mx-auto">
+            <main id="landing-header">
+                <div class="col-7 mx-auto content-area pb-3">
+                    <h1 class="content-center">Welcome to SkillerApp</h1>
+                    <small class="text-muted">The app where your skills get noticed!</small>
+                    <hr/>
                     <div>
-                        <a href="/login"><button class="btn btn-lg btn-success landing">Login</button></a>
-                        <p>Or read more and</p>
-                        <a href="/signup"><button class="btn btn-lg btn-success landing">Sign Up!</button></a>
+                        <p>
+                            Proceed to <a href="/login" class="normalButton"><u>Login</u></a>
+                            or join the community and <a href="/signup" class="normalButton"><u>Sign Up!</u></a>
+                        </p>
+                        
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
+
         <ul class="slideshow">
             <li></li>
             <li></li>

@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <title>Otsikoi kaikki sivut oikein</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
         <link rel="stylesheet" type="text/css" th:href="@{/css/project.css}"/>
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"/>
         <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet"/>
@@ -12,19 +12,19 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" defer></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" defer></script>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js" defer></script>
-        <script type="text/javascript" th:src="@{/javascript/navbar.js}" defer></script>
     </head>
     <body>
 
         <header th:fragment="header">
             <div class="container">
-                <nav>
+                <nav th:fragment="logo">
                     <div class="d-flex justify-content-center">
                         <h1 id="title">
                             SkillerApp
                         </h1>
                     </div>
                 </nav>
+                <hr/>
                 <nav id="mainNavbar" class="navbar navbar-expand-sm py-1">
                     <div class="container siteName">
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,31 +33,32 @@
                             </span>
                         </button>
                     </div>
-                    <div class="container">
+                    <div class="container pl-5 pl-sm-0">
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav mr-auto d-flex justify-content-around">
+                            <ul id="nav-buttons" class="navbar-nav mr-auto d-flex justify-content-around">
+                                <!--TODO - KOITA ISONTAA A:N PADDING, JOTTA HIIRI OSUU LINKKIIN PAREMMIN-->
                                 <li>
-                                    <a th:href="@{/profiles/{profile}(profile=${currentAccount.profile})}" alt="Profile">
+                                    <a th:href="@{/profiles/{profile}(profile=${currentAccount.profile})}" alt="Profile" title="Profile page">
                                         <i class="fas fa-user"></i>
                                         <i class="fas fa-user"></i>
                                     </a>
                                 </li>
                                 <li>
-                                    <a th:href="@{/profiles/{profile}/contacts(profile=${currentAccount.profile})}">
+                                    <a th:href="@{/profiles/{profile}/contacts(profile=${currentAccount.profile})}" title="Contacts">
                                         <i class="fas fa-users"></i>
                                         <i class="fas fa-users"></i>
                                     </a>
                                     
                                 </li>
                                 <li>
-                                    <a th:href="@{/messages}">
+                                    <a th:href="@{/messages}" title="Messages">
                                         <i class="fas fa-comments"></i>
                                         <i class="fas fa-comments"></i>
                                     </a>
                                     
                                 </li>
                                 <li>
-                                    <a th:href="@{/searchpage}">
+                                    <a th:href="@{/searchpage}" title="Search user">
                                         <i class="fas fa-search"></i>
                                         <i class="fas fa-search"></i>
                                     </a>
@@ -65,7 +66,7 @@
                                 </li>
                                 <li>
                                     <form th:action="@{/logout}" method="POST">
-                                        <button id="logoutButton">
+                                        <button id="logoutButton" title="Log out">
                                             <i class="fas fa-sign-out-alt"></i>
                                             <i class="fas fa-sign-out-alt"></i>
                                         </button>
@@ -75,29 +76,6 @@
                             </ul>
                         </div>
                     </div>
-
-                    <!--                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                            <ul class="navbar-nav mr-auto">
-                                                <li class="nav-item active">
-                                                    <a class="nav-link" th:href="@{/profiles/{profile}(profile=${currentAccount.profile})}">Profile<span class="sr-only">(current)</span></a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/profiles/{profile}/contacts(profile=${currentAccount.profile})}">Contacts</a>
-                                                </li>
-                                                <li class="nav-item">
-                                                    <a class="nav-link" th:href="@{/messages}">Forum</a>
-                                                </li>
-                                            </ul>
-                                            <form class="form-inline my-2 my-lg-0" th:action="@{/profiles/search}" method="GET">
-                                                <input class="form-control mr-sm-2" type="search" name="keyword" placeholder="Search users" size="10"/>
-                                                <button class="searchButton"><i class="fas fa-search"></i></button>
-                                            </form>
-                                            <div class="navbar-text">
-                                                TODO - Logout logo ja <a href="@{/logout}"> 
-                                                <form method="POST" th:action="@{/logout}"><input type="submit" name="logout" value="Logout"/></form>
-                                            </div>
-                                        </div>-->
-
                 </nav>
             </div>
         </header>

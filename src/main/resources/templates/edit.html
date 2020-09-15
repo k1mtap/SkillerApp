@@ -9,12 +9,12 @@
             <header th:replace="fragments/layout :: header"></header>
 
             <main>
-                <div class="col-11 profile">
+                <div class="col-11 content-area">
 
                     <!--OTSAKE-->
-                    <div class="row align-items-center">
+                    <div class="row align-items-center pt-2">
                         <div class="col-10">
-                            <h1><span th:text="${account.name}">name</span>'s profile</h1>
+                            <h1><span th:text="${account.name}">name</span></h1>
                         </div>
                         <div class="col-2 text-right">
                             <a th:href="@{/profiles/{profile}(profile=${currentAccount.profile})}" title="Back to profile page">
@@ -22,8 +22,28 @@
                             </a>
                         </div>
                     </div>
+                    
+                    <hr/>
+                    
+                    <!--EDIT-OSA-->
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-6 component d-flex justify-content-center">
+                            <form th:if="${currentAccount.image == null}" th:action="@{/profiles/{profile}/image(profile=${currentAccount.profile})}" method="POST" enctype="multipart/form-data">
+                                <input type="file" class="inputfile" name="image" id="image" placeholder="Add a skill"/>
+                                <label for="image">Add a png picture</label>
+                                <button class="normalButton" title="Add a picture"><i class="fas fa-plus-circle"></i></button>
+                            </form>
+                        </div>
+                        <div class="col-6 component d-flex justify-content-center addSkill">
+                            <form th:action="@{/profiles/{profile}/skills(profile=${currentAccount.profile})}" th:object="${skill}" method="POST">
+                                <input type="text" th:field="*{content}" class="skillInput" placeholder="Add a skill"/>
+                                <small th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="form-text text-danger">virheviesti</small>
+                                <button class="normalButton" title="Add a skill"><i class="fas fa-plus-circle"></i></button>
+                            </form>
+                        </div>
+                    </div>
 
-                    <!--KESKIOSA-->
+                    <!--SISÄLTÖ-->
                     <div class="row">
                         <div class="col-5 component d-flex justify-content-center align-items-center">
                             <div class="row d-flex justify-content-center">
@@ -56,24 +76,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                    </div>
-
-                    <!--ALAOSA-->
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-6 component d-flex justify-content-center">
-                            <form th:if="${currentAccount.image == null}" th:action="@{/profiles/{profile}/image(profile=${currentAccount.profile})}" method="POST" enctype="multipart/form-data">
-                                <input type="file" class="inputfile" name="image" id="image" placeholder="Add a skill"/>
-                                <label for="image">Add a picture</label>
-                                <button class="normalButton" title="Add a picture"><i class="fas fa-plus-circle"></i></button>
-                            </form>
-                        </div>
-                        <div class="col-6 component d-flex justify-content-center addSkill">
-                            <form th:action="@{/profiles/{profile}/skills(profile=${currentAccount.profile})}" th:object="${skill}" method="POST">
-                                <input type="text" th:field="*{content}" class="skillInput" placeholder="Add a skill"/>
-                                <small th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="form-text text-danger">virheviesti</small>
-                                <button class="normalButton" title="Add a skill"><i class="fas fa-plus-circle"></i></button>
-                            </form>
                         </div>
                     </div>
 

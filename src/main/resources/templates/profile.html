@@ -8,23 +8,25 @@
             <header th:replace="fragments/layout :: header"></header>
 
             <main>
-                <div class="col-11 profile">
+                <div class="col-11 content-area">
 
                     <!--OTSAKE-->
-                    <div class="row align-items-center">
+                    <div class="row align-items-center pt-2">
                         <div class="col-10">
-                            <h1><span th:text="${account.name}">name</span>'s profile</h1>
+                            <h1><span th:text="${account.name}">name</span></h1>
                         </div>
                         <div class="col-2 text-right">
                             <a th:if="${currentAccount != account && !contactDoneOrPending}" th:href="@{/profiles/{profile}/contacts/send_contact_request(profile=${account.profile})}" title="Send contact request">
                                 <i class="fas fa-user-plus normalButton headerButton"></i>
                             </a>
-                            <a th:if="${currentAccount == account}" th:href="@{/profiles/{profile}/edit(profile=${account.profile})}" title="Edit your profile">
+                            <a th:if="${currentAccount == account}" th:href="@{/profiles/{profile}/skills(profile=${account.profile})}" title="Edit your profile">
                                 <i class="fas fa-user-edit normalButton headerButton"></i>
                             </a>
                         </div>
                     </div>
-
+                    
+                    <hr/>
+                    
                     <!--SISÄLTÖ-->
                     <div class="row">
                         <div class="col-5 component d-flex justify-content-center align-items-center">
@@ -41,10 +43,20 @@
                                     <tbody>
                                         <tr th:each="skill : ${skills}">
                                             <td th:text="${skill.content}" class="skill">skill</td>
-                                            <td th:text="${#lists.size(skill.praises)}" class="praises" style="width: 20px;">3</td>
+                                            <td th:text="${#lists.size(skill.praises)}" class="pr-2">praises</td>
                                             <td class="praise">
-                                                <a th:if="${skill.praises.contains(currentAccount)}" th:href="@{/profiles/{profile}/skills/{id}/praise(profile = ${account.profile}, id = ${skill.id})}" title="Praise this skill"><i class="fas fa-thumbs-down normalButton"></i></a>
-                                                <a th:unless="${skill.praises.contains(currentAccount)}" th:href="@{/profiles/{profile}/skills/{id}/praise(profile = ${account.profile}, id = ${skill.id})}" title="Praise this skill"><i class="fas fa-thumbs-up normalButton"></i></a>
+                                                <form th:if="${skill.praises.contains(currentAccount)}" th:action="@{/profiles/{profile}/skills/{id}(profile = ${account.profile}, id = ${skill.id})}" th:method="PUT">
+                                                    <button class="deleteButton" title="Remove like"><i class="fas fa-thumbs-down"></i></button>
+                                                </form>
+                                                <form th:unless="${skill.praises.contains(currentAccount)}" th:action="@{/profiles/{profile}/skills/{id}(profile = ${account.profile}, id = ${skill.id})}" th:method="PUT">
+                                                    <button class="normalButton" title="Like"><i class="fas fa-thumbs-up"></i></button>
+                                                </form>
+<!--                                                <a th:if="${skill.praises.contains(currentAccount)}" th:href="@{/profiles/{profile}/skills/{id}/praise(profile = ${account.profile}, id = ${skill.id})}" title="Remove praise">
+                                                    <i class="fas fa-thumbs-down deleteButton"></i>
+                                                </a>
+                                                <a th:unless="${skill.praises.contains(currentAccount)}" th:href="@{/profiles/{profile}/skills/{id}/praise(profile = ${account.profile}, id = ${skill.id})}" title="Praise">
+                                                    <i class="fas fa-thumbs-up normalButton"></i>
+                                                </a>-->
                                             </td>
                                         </tr>
                                     </tbody>

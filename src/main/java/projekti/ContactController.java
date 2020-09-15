@@ -2,12 +2,10 @@ package projekti;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class ContactController {
@@ -60,12 +58,11 @@ public class ContactController {
         return "redirect:/profiles/" + profile + "/contacts";
     }
     
-//    TODO - tarkista polku, riittääkö pelkkä /contacts/{id} ? RESTful routing
-    @DeleteMapping("/profiles/{profile}/contacts/{id}/delete")
+    @DeleteMapping("/profiles/{profile}/contacts/{id}")
     public String deleteContact(@PathVariable String profile, @PathVariable Long id) {
-        
+        System.out.println("Aloitetan kontaktin poisto");
         contactService.deleteContact(id);
-        
+        System.out.println("Valmis -> redirect");
         return "redirect:/profiles/" + profile + "/contacts";
     }
 }

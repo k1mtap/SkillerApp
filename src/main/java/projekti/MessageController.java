@@ -9,76 +9,79 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MessageController {
 
-    @Autowired private MessageService messageService;
-    @Autowired private AccountService accountService;
+    @Autowired
+    private MessageService messageService;
+    @Autowired
+    private AccountService accountService;
 
-    @GetMapping("/messages")
-    public String getMessagePage() {
-        
-        return "redirect:/1/messages";
-    }
     
-    @GetMapping("/{currentPage}/messages")
-    public String showMessages(Model model, @PathVariable("currentPage") Integer currentPage) {
+    @GetMapping("/messages")
+    public String showMessagesAndComments(Model model, @RequestParam(defaultValue = "0") Integer msgPage) {
+        
+//        , @RequestParam(defaultValue = "0") Integer cmtPage
         
         Account currentAccount = accountService.getCurrentAccount();
-        Page<Message> p = messageService.getAllContactMessages(currentAccount, currentPage);
-        int totalPages = p.getTotalPages();
-        List<Message> allMessages = p.getContent();
+
+        Page<Message> messagePage = messageService.getAllContactMessages(currentAccount, msgPage);
+//        List<Page<Comment>> commentPagesForMessages = messageService.getAllMessageComments(cmtPage);
         
         model.addAttribute("currentAccount", currentAccount);
-        model.addAttribute("messages", allMessages);
-        model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", totalPages);
-        
-        return "forum";
+        model.addAttribute("messagePage", messagePage);
+//        model.addAttribute("commentPages", commentPagesForMessages);
+
+        return "messages";
     }
 
-//    TODO - onko parempi toteuttaa ModelAttribute Message message?
     @PostMapping("/messages")
     public String addMessage(@RequestParam String content) {
-        
+
         messageService.addMessage(content);
         return "redirect:/messages";
     }
-    
-    @GetMapping("/{currentPage}/messages/{id}/like")
-    public String addLikeToMessage(@PathVariable("id") Long id, @PathVariable("currentPage") Integer currentPage) {
-        
+
+    @PutMapping("/messages/{id}")
+    public String addLikeToMessage(@PathVariable("id") Long id) {
+
         messageService.addLikeToMessage(id);
-        return "redirect:/" + currentPage + "/messages";
+        return "redirect:/messages";
     }
-    
-//    TODO - käytä deletemapping? ja hoida forum.html:stä form blockline tms css:stä
-    @GetMapping("/{currentPage}/messages/{id}") 
-    public String deleteMessage(@PathVariable("currentPage") Integer currentPage, @PathVariable Long id) {
-        
+
+    @DeleteMapping("/messages/{id}")
+    public String deleteMessage(@PathVariable Long id) {
+
         messageService.deleteMessage(id);
-        return "redirect:/" + currentPage + "/messages";
+        return "redirect:/messages";
     }
-    
-    @PostMapping("/{currentPage}/messages/{id}/comments")
-    public String addComment(@PathVariable("currentPage") Integer currentPage, @PathVariable Long id, @RequestParam String content) {
-        
+
+//  ====== COMMENTS ======
+    @PostMapping("/messages/{id}/comments")
+    public String addComment(@PathVariable Long id, @RequestParam String content) {
+
         messageService.addComment(id, content);
-        return "redirect:/" + currentPage + "/messages";
+
+        return "redirect:/messages";
     }
-    
-    @GetMapping("/{currentPage}/messages/{id}/comments/{commentId}")
-    public String addLikeToComment(@PathVariable("currentPage") Integer currentPage, @PathVariable("commentid") Long commentId) {
-        
-        return "redirect:/" + currentPage + "/messages";
+
+    @PutMapping("/messages/{id}/comments/{commentId}")
+    public String addLikeToComment(@PathVariable("commentId") Long commentId) {
+
+        messageService.addLikeToComment(commentId);
+
+        return "redirect:/messages";
     }
-    
-    @DeleteMapping("/{currentPage}/messages/{id}/comments/{commentId}")
-    public String deleteComment(@PathVariable("currentPage") Integer currentPage, @PathVariable("commentid") Long commentId) {
-        
-        return "redirect:/" + currentPage + "/messages";
+
+    @DeleteMapping("/messages/{id}/comments/{commentId}")
+    public String deleteComment(@PathVariable("id") Long id, @PathVariable("commentId") Long commentId) {
+
+        messageService.deleteComment(id, commentId);
+
+        return "redirect:/messages";
     }
 
 }

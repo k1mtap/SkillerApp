@@ -37,7 +37,7 @@ public class ImageController {
         a.setImage(i);
         accountRepository.save(a);
 
-        return "redirect:/profiles/" + profile + "/edit";
+        return "redirect:/profiles/" + profile + "/skills";
     }
     
 //    TODO - muuta @DeleteMapping (html:ään form ja method="DELETE") ja tarkista polku, pelkkä /image?
@@ -50,12 +50,13 @@ public class ImageController {
         imageRepository.delete(i);
         accountRepository.save(a);
 
-        return "redirect:/profiles/" + profile + "/edit";
+        return "redirect:/profiles/" + profile + "/skills";
     }
 
     @GetMapping(path = "/profiles/{profile}/image/content", produces = "image/png")
     @ResponseBody
     public byte[] getContent(@PathVariable String profile) {
+        
         return accountRepository.findByProfile(profile).getImage().getContent();
     }
 }

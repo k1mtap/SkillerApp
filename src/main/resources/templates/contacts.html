@@ -4,71 +4,165 @@
         <title>Contacts</title>
     </head>
     <body>
-        <div th:replace="fragments/layout :: header"></div>
+        <div class="container">
+            <header th:replace="fragments/layout :: header"></header>
+
+            <main>
+                <div class="col-10 col-md-8 col-lg-7 col-xl-6 content-area pb-2">
+
+                    <!--OTSAKE-->
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-auto text-center">
+                            <h1>Your contacts</h1>
+                        </div>
+                    </div>
+                    
+                    <hr/>
+                    
+                    <!--SISÄLTÖ-->
+                    <div class="col">
+                        <div class="col component">
+                            <table>
+                                <tbody>
+                                    <tr th:each="contact : ${currentAccount.contacts}">
+                                        <td style="width: 150px;">
+                                            <form th:action="@{/profiles/{profile}/contacts/{id}(profile = ${currentAccount.profile}, id = ${contact.id})}" th:method="DELETE">
+                                                <button class="deleteButton" type="submit" title="Remove from contacts"><i class="fas fa-user-minus"></i></button>
+                                            </form> 
+                                        </td>
+                                        <td style="width: 50px;">
+                                            <img th:if="${contact.image == null}" th:src="@{/images/no_image.png}" width="100%"/>
+                                            <img th:unless="${contact.image == null}" th:src="@{/profiles/{profile}/image/content(profile=${contact.profile})}" width="100%"/>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/profiles/{profile}(profile = ${contact.profile})}" class="normalButton">
+                                                <span th:text="${contact.name}">name</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr/>
+                        </div>
+
+                        
+
+                        <div th:if="${currentAccount.receivedContacts.size() > 0}" class="col component">
+                            <h4>Waiting for your action</h4>
+                            <table>
+                                <tbody>
+                                    <tr th:each="receivedContact : ${currentAccount.receivedContacts}">
+                                        <td style="width: 150px;">
+                                            <a th:href="@{/profiles/{profile}/contacts/{id}/approve_contact(profile=${currentAccount.profile}, id=${receivedContact.id})}" class="normalButton">
+                                                <button class="normalButton" title="Approve contact request"><i class="fas fa-user-plus"></i></button>
+                                            </a>
+                                            <span> / </span>
+                                            <a th:href="@{/profiles/{profile}/contacts/{id}/decline_contact(profile=${currentAccount.profile}, id=${receivedContact.id})}" class="normalButton">
+                                                <button class="deleteButton" title="Decline contact request"><i class="fas fa-user-minus"></i></button>
+                                            </a>
+                                        </td>
+                                        <td style="width: 50px;">
+                                            <img th:if="${receivedContact.askingAccount.image == null}" th:src="@{/images/no_image.png}" width="100%"/>
+                                            <img th:unless="${receivedContact.askingAccount.image == null}" th:src="@{/profiles/{profile}/image/content(profile=${receivedContact.askingAccount.profile})}" width="100%"/>
+                                        </td>
+                                        <td class="contact-name">
+                                            <a th:href="@{/profiles/{profile}(profile = ${receivedContact.askingAccount.profile})}" class="normalButton">
+                                                <span th:text="${receivedContact.askingAccount.name}">name</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <hr/>
+                        </div>
+
+                        
+
+                        <div th:if="${currentAccount.sentContacts.size() > 0}" class="col component">
+                            <h4>Waiting for contact's action:</h4>
+                            <table>
+                                <tbody>
+                                    <tr th:each="sentContact : ${currentAccount.sentContacts}">
+                                        <td>
+                                            <a th:href="@{/profiles/{profile}(profile = ${sentContact.targetAccount.profile})}" class="normalButton">
+                                                <span th:text="${sentContact.targetAccount.name}">name</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+
+
 
         <!--TODO - käyttäjän oma sivu, modelina saatava käyttäjä-->
-        <div class="container">
-            <h2>Contacts</h2>
-
-            <p><span th:text="${currentAccount.name}">name</span>'s contacts</p>
-
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Contacts</h5>
-                    <table class="table table-borderless">
-                        <caption>Your contacts:</caption>
-                        <tbody>
-                            <tr th:each="contact : ${currentAccount.contacts}">
-                                <td>
-                                    <a th:href="@{/profiles/{profile}(profile = ${contact.profile})}">
-                                        <span th:text="${contact.name}">name</span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <!--TODO - icon-->
-                                    <form th:action="@{/profiles/{profile}/contacts/{id}/delete(profile = ${currentAccount.profile}, id = ${contact.id})}" th:method="delete">
-                                        <button class="btn btn-sm btn-danger" type="submit">delete</button>
-                                    </form> 
-                                </td>
-                                <!--TODO - delete nappi tänne-->
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-borderless">
-                        <caption>Waiting for your approval</caption>
-                        <tbody>
-                            <tr th:each="receivedContact : ${currentAccount.receivedContacts}">
-                                <td>
-                                    <a th:href="@{/profiles/{profile}(profile = ${receivedContact.askingAccount.profile})}">
-                                        <span th:text="${receivedContact.askingAccount.name}">name</span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <!--TODO - tähän jotkut sopivat iconit mieluummin-->
-                                    <a th:href="@{/profiles/{profile}/contacts/{id}/approve_contact(profile=${currentAccount.profile}, id=${receivedContact.id})}">
-                                        <button class="btn btn-sm btn-success">accept</button>
-                                    </a>
-                                    <a th:href="@{/profiles/{profile}/contacts/{id}/decline_contact(profile=${currentAccount.profile}, id=${receivedContact.id})}">
-                                    <button class="btn btn-sm btn-danger">decline</button>
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-borderless">
-                        <caption>Waiting for users approval</caption>
-                        <tbody>
-                            <tr th:each="sentContact : ${currentAccount.sentContacts}">
-                                <td>
-                                    <a th:href="@{/profiles/{profile}(profile = ${sentContact.targetAccount.profile})}">
-                                        <span th:text="${sentContact.targetAccount.name}">name</span>
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+        <!--        <div class="container">
+                    <h2>Contacts</h2>
+        
+                    <p><span th:text="${currentAccount.name}">name</span>'s contacts</p>
+        
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Contacts</h5>
+                            <table class="table table-borderless">
+                                <caption>Your contacts:</caption>
+                                <tbody>
+                                    <tr th:each="contact : ${currentAccount.contacts}">
+                                        <td>
+                                            <a th:href="@{/profiles/{profile}(profile = ${contact.profile})}">
+                                                <span th:text="${contact.name}">name</span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            TODO - icon
+                                            <form th:action="@{/profiles/{profile}/contacts/{id}/delete(profile = ${currentAccount.profile}, id = ${contact.id})}" th:method="delete">
+                                                <button class="btn btn-sm btn-danger" type="submit">delete</button>
+                                            </form> 
+                                        </td>
+                                        TODO - delete nappi tänne
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-borderless">
+                                <caption>Waiting for your approval</caption>
+                                <tbody>
+                                    <tr th:each="receivedContact : ${currentAccount.receivedContacts}">
+                                        <td>
+                                            <a th:href="@{/profiles/{profile}(profile = ${receivedContact.askingAccount.profile})}">
+                                                <span th:text="${receivedContact.askingAccount.name}">name</span>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            TODO - tähän jotkut sopivat iconit mieluummin
+                                            <a th:href="@{/profiles/{profile}/contacts/{id}/approve_contact(profile=${currentAccount.profile}, id=${receivedContact.id})}">
+                                                <button class="btn btn-sm btn-success">accept</button>
+                                            </a>
+                                            <a th:href="@{/profiles/{profile}/contacts/{id}/decline_contact(profile=${currentAccount.profile}, id=${receivedContact.id})}">
+                                            <button class="btn btn-sm btn-danger">decline</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-borderless">
+                                <caption>Waiting for users approval</caption>
+                                <tbody>
+                                    <tr th:each="sentContact : ${currentAccount.sentContacts}">
+                                        <td>
+                                            <a th:href="@{/profiles/{profile}(profile = ${sentContact.targetAccount.profile})}">
+                                                <span th:text="${sentContact.targetAccount.name}">name</span>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>-->
+        <!--</div>-->
     </body>
 </html>

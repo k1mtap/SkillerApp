@@ -2,7 +2,6 @@
 package projekti;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -39,7 +38,7 @@ public class Account extends AbstractPersistable<Long>{
     @Size(min = 3, max = 10)
     private String profile;
     
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "account")
     private List<Skill> skills = new ArrayList<>();
     
     @OneToOne
@@ -61,12 +60,4 @@ public class Account extends AbstractPersistable<Long>{
     @OneToMany(mappedBy = "targetAccount")
     private List<Contact> receivedContacts = new ArrayList<>();
     
-    
-    public List<Skill> getSortedSkills() {
-        
-        List<Skill> sortedSkills = skills;
-        Collections.sort(sortedSkills);
-        
-        return sortedSkills;
-    }
 }

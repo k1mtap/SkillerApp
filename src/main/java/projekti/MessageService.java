@@ -1,6 +1,7 @@
 
 package projekti;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,30 +9,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MessageService {
     
-    @Autowired
-    private MessageRepository messageRepository;
-    @Autowired
-    private CommentRepository commentRepository;
-    @Autowired
-    private AccountService accountService;
+    @Autowired private MessageRepository messageRepository;
+    @Autowired private CommentRepository commentRepository;
+    @Autowired private AccountService accountService;
+    
+    
+//  ====== MESSAGES ======    
+    
+    public Message getOne(Long id) {
+        return messageRepository.getOne(id);
+    }
     
     public Page<Message> getAllContactMessages(Account account, Integer page){
         
-//        TODO - muuta 5 -> 25
-        Pageable sortedByDateDesc = PageRequest.of(page - 1, 5, Sort.by("date").descending());
+        Pageable pageable = PageRequest.of(page, 3);
         
-        List<Long> ids = new ArrayList<>();
-        for (Account a : account.getContacts()) {
-            ids.add(a.getId());
-        }
-        
-        return messageRepository.findAllContactMessages(account.getId(), ids, sortedByDateDesc);
+        return messageRepository.findAllContactMessages(account.getId(), pageable);
     }
     
     public void addMessage(String content) {
@@ -57,12 +56,14 @@ public class MessageService {
         messageRepository.save(message);
     }
     
+    @Transactional
     public void deleteMessage(Long id) {
         
         Account currentAccount = accountService.getCurrentAccount();
         Message message = messageRepository.getOne(id);
         
         if (currentAccount == message.getAccount()) {
+            commentRepository.deleteMessageComments(id);
             messageRepository.delete(message);
         }
     }
@@ -70,14 +71,36 @@ public class MessageService {
     
 //  ====== COMMENTS ======
     
+//    public List<Page<Comment>> getAllMessageComments(Integer page){
+//        
+//        Pageable pageable = PageRequest.of(page, 3);
+//        
+//        List<Page<Comment>> commentPagesForMessages = new ArrayList<>();
+//        List<BigInteger> messageIds = messageRepository.findAllContactMessagesIds(accountService.getCurrentAccount().getId());
+//        
+//        for (BigInteger id : messageIds) {
+//            
+//            Page<Comment> commentPage = commentRepository.findByMessageId(id, pageable);
+//            
+//            if (commentPage.isEmpty()) {
+//                continue;
+//            }
+//            
+//            commentPagesForMessages.add(commentPage);
+//        }
+//        
+//        return commentPagesForMessages;
+//    }
+    
     public void addComment(Long id, String content) {
         
         Message message = messageRepository.getOne(id);
         
         Comment comment = new Comment();
+        comment.setMessage(message);
         comment.setContent(content);
         comment.setAccount(accountService.getCurrentAccount());
-        comment.setDateAndTime(LocalDateTime.now());
+        comment.setDate(LocalDateTime.now());
         commentRepository.save(comment);
         
         message.getComments().add(comment);
@@ -97,5 +120,18 @@ public class MessageService {
 
         comment.getLikes().add(currentAccount);
         commentRepository.save(comment);
+    }
+    
+//    @Transactional
+    public void deleteComment(Long id, Long commentId) {
+        
+        Account currentAccount = accountService.getCurrentAccount();
+        Comment comment = commentRepository.getOne(commentId);
+        Message message = messageRepository.getOne(id);
+        
+        if (currentAccount == comment.getAccount()) {
+            message.getComments().remove(comment);
+            commentRepository.delete(comment);
+        }
     }
 }

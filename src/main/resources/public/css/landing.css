@@ -1,86 +1,82 @@
+
 body {
-	background-color: #000;
+    background-color: #000;
 }
 
 #landing-header {
-/* The webpage can be viewed on a 3-dimensional plane (x = left-right, y = up-down, z = forward-backward in the space). Giving z-index = 1 means it's coming forward, towards us. We set the z-index to 1 so all of the elements inside the landing-header div will be in front of the background images */
-  z-index: 1;
-/* In order for us to be able to use the z-index we have to change the position from something other than static. Static is the default position value for all html-elements. Static will ignore the z-index. */
-  position: relative;
-/* This will center the text and the button horizontally. */
-  text-align: center;
-/* To align the text vertically we use padding-top, 40 view height.	*/
-  padding-top: 40vh;
+    /* The webpage can be viewed on a 3-dimensional plane (x = left-right, y = up-down, z = forward-backward in the space). Giving z-index = 1 means it's coming forward, towards us. We set the z-index to 1 so all of the elements inside the landing-header div will be in front of the background images */
+    z-index: 1;
+    /* In order for us to be able to use the z-index we have to change the position from something other than static. Static is the default position value for all html-elements. Static will ignore the z-index. */
+    position: relative;
+    /* This will center the text and the button horizontally. */
+    text-align: center;
+    /* To align the text vertically we use padding-top, 40 view height.	*/
+    padding-top: 40vh;
+    margin-top: 0;
 }
 
-
-#landing-header h1, p, a, a:hover {
-    color: #ffffff;
+#landing-header h1 {
     margin: 0;
-    text-shadow: 1px 1px 2px black;
-}
-
-.btn.btn-lg.btn-success.landing {
-    margin-bottom: 5px;
+    text-shadow: 1px 1px 2px #2B4560;
 }
 
 /* This will fix the ul to the window, positioning it in the top left corner and filling the entire screen by setting width and height to 100%; we set the z-index to 0 to keep the background images behind the rest of the page's content; list-style is set to none in order to hide the bullet points from the list's default styling; margin and padding are removed entirely */
 .slideshow { 
-  position: fixed;
-  width: 100%;
-  height: 100%;
-/* top-left -corner */
-  top: 0;
-  left: 0;
-/* The background images will be behind the text and the button	*/
-  z-index: 0;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    /* top-left -corner */
+    top: 0;
+    left: 0;
+    /* The background images will be behind the text and the button	*/
+    z-index: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 /* Now we can style all of the list items */
 .slideshow li { 
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-/* This will allow the images to take up the entire space of the page */
-  background-size: cover;
-/* This will center the images perfectly on the page */
-  background-position: 50% 50%;
-/* This will prevent the images of being repeated vertically or horizontally */
-  background-repeat: no-repeat;
-/* We want our images to start as faded out. Later we create the animation to slowly fade them in to and opacity of 1*/
-  opacity: 0;
-/* The background images will be behind the text and the button	*/
-  z-index: 0;
-/* the name "imageAnimation" can be anything we want, as long as it matches the animation we are going to create later */
-  animation: imageAnimation 50s linear infinite; 
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* This will allow the images to take up the entire space of the page */
+    background-size: cover;
+    /* This will center the images perfectly on the page */
+    background-position: 50% 50%;
+    /* This will prevent the images of being repeated vertically or horizontally */
+    background-repeat: no-repeat;
+    /* We want our images to start as faded out. Later we create the animation to slowly fade them in to and opacity of 1*/
+    opacity: 0;
+    /* The background images will be behind the text and the button	*/
+    z-index: 0;
+    /* the name "imageAnimation" can be anything we want, as long as it matches the animation we are going to create later */
+    animation: imageAnimation 50s linear infinite; 
 }
 /* Notice the animation property at the bottom of this rule, this is how we add an animation to an element; in this case we have an animation named imageAnimation that lasts for 50s (seconds), keeps linear timing (the whole animation runs at the same speed), and loops an infinite number of times */
 
 
 /* Each list item needs a background-image and the last four need an animation-delay (this way they all fire off one after the other in ten second intervals): */
 .slideshow li:nth-child(1) { 
-  background-image: url(https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80) 
+    background-image: linear-gradient(to bottom, rgba(225, 231, 224, 0.6) 0%, rgba(106, 176, 164, 0.75) 100%), url(https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80) 
 }
 .slideshow li:nth-child(2) { 
-  background-image: url(https://images.unsplash.com/photo-1455165814004-1126a7199f9b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80);
-  animation-delay: 10s; 
+    background-image: linear-gradient(to bottom, rgba(225, 231, 224, 0.6) 0%, rgba(106, 176, 164, 0.75) 100%), url(https://images.unsplash.com/photo-1455165814004-1126a7199f9b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80);
+    animation-delay: 10s; 
 }
 .slideshow li:nth-child(3) { 
-  background-image: url(https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80);
-  animation-delay: 20s; 
+    background-image: linear-gradient(to bottom, rgba(225, 231, 224, 0.6) 0%, rgba(106, 176, 164, 0.75) 100%), url(https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80);
+    animation-delay: 20s; 
 }
 .slideshow li:nth-child(4) { 
-  background-image: url(https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80);
-  animation-delay: 30s; 
+    background-image: linear-gradient(to bottom, rgba(225, 231, 224, 0.6) 0%, rgba(106, 176, 164, 0.75) 100%), url(https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80);
+    animation-delay: 30s; 
 }
 .slideshow li:nth-child(5) { 
-  background-image: url(https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80);
-  animation-delay: 40s; 
+    background-image: linear-gradient(to bottom, rgba(225, 231, 224, 0.6) 0%, rgba(106, 176, 164, 0.75) 100%), url(https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80);
+    animation-delay: 40s; 
 }
 
 /* Now we can create the keyframes for the animation. What we'll do is indicate what we want to happen at various keyframes within the animation */
@@ -88,24 +84,24 @@ body {
 /* The property "animation-timing-function" gives us a smooth transition as we fade in from 0% -> 10% */
 /* So, first image starts at opacity=0 at 0s (0%), opacity=1 at 5s (10%), opacity=1 at 10s (20%) and opacity=0 at 15s (30%). The second image starts at opacity=0 at 10s, opacity=1 at 15s and so on.. So the two images 'overlap' at 10s -> 15s, and this keeps going on through all the images. */
 @keyframes imageAnimation { 
-  0% { 
-    opacity: 0; 
-    animation-timing-function: ease-in;
-  }
-  10% {
-    opacity: 1;
-    animation-timing-function: ease-out;
-  }
-  20% {
-    opacity: 1
-  }
-  30% {
-    opacity: 0
-  }
+    0% { 
+        opacity: 0; 
+        animation-timing-function: ease-in;
+    }
+    10% {
+        opacity: 1;
+        animation-timing-function: ease-out;
+    }
+    20% {
+        opacity: 1
+    }
+    30% {
+        opacity: 0
+    }
 }
 
 /* Lastly, we need to add animation support for older browsers; we've already added the modernizr CDN to our landing page's head element, now we just need the following rule in our landing.css: */
 /* Older browser support - .no-cssanimations class added by modernizr */
 .no-cssanimations .slideshow li {
-	opacity: 1;
+    opacity: 1;
 }
