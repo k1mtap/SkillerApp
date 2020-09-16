@@ -18,9 +18,9 @@ public interface MessageRepository extends JpaRepository<Message, Long>{
                     + "ORDER BY M.date DESC", nativeQuery = true)
     Page<Message> findAllContactMessages(Long account_id, Pageable pageable);
     
-//    @Query(value = 
-//            "SELECT M.id FROM Message M WHERE M.account_id = :account_id OR M.account_id IN "
-//                    + "(SELECT C.account2_id FROM Contacts C WHERE C.account1_id = :account_id)", nativeQuery = true)
-//    List<BigInteger> findAllContactMessagesIds(Long account_id);
+    @Query(value = 
+            "SELECT M.id FROM Message M WHERE M.account_id = :account_id OR M.account_id IN "
+                    + "(SELECT C.account2_id FROM Contacts C WHERE C.account1_id = :account_id)", nativeQuery = true)
+    List<BigInteger> findAllContactMessagesIds(Long account_id);
     
 }

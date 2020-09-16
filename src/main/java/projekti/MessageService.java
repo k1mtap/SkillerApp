@@ -28,7 +28,7 @@ public class MessageService {
     
     public Page<Message> getAllContactMessages(Account account, Integer page){
         
-        Pageable pageable = PageRequest.of(page, 3);
+        Pageable pageable = PageRequest.of(page, 10);
         
         return messageRepository.findAllContactMessages(account.getId(), pageable);
     }
@@ -71,26 +71,26 @@ public class MessageService {
     
 //  ====== COMMENTS ======
     
-//    public List<Page<Comment>> getAllMessageComments(Integer page){
-//        
-//        Pageable pageable = PageRequest.of(page, 3);
-//        
-//        List<Page<Comment>> commentPagesForMessages = new ArrayList<>();
-//        List<BigInteger> messageIds = messageRepository.findAllContactMessagesIds(accountService.getCurrentAccount().getId());
-//        
-//        for (BigInteger id : messageIds) {
-//            
-//            Page<Comment> commentPage = commentRepository.findByMessageId(id, pageable);
-//            
-//            if (commentPage.isEmpty()) {
-//                continue;
-//            }
-//            
-//            commentPagesForMessages.add(commentPage);
-//        }
-//        
-//        return commentPagesForMessages;
-//    }
+    public List<Page<Comment>> getAllMessageComments(){
+        
+        Pageable pageable = PageRequest.of(0, 10);
+        
+        List<Page<Comment>> commentPagesForMessages = new ArrayList<>();
+        List<BigInteger> messageIds = messageRepository.findAllContactMessagesIds(accountService.getCurrentAccount().getId());
+        
+        for (BigInteger id : messageIds) {
+            
+            Page<Comment> commentList = commentRepository.findByMessageId(id, pageable);
+            
+            if (commentList.isEmpty()) {
+                continue;
+            }
+            
+            commentPagesForMessages.add(commentList);
+        }
+        
+        return commentPagesForMessages;
+    }
     
     public void addComment(Long id, String content) {
         

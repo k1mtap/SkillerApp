@@ -37,42 +37,48 @@
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul id="nav-buttons" class="navbar-nav mr-auto d-flex justify-content-around">
                                 <!--TODO - KOITA ISONTAA A:N PADDING, JOTTA HIIRI OSUU LINKKIIN PAREMMIN-->
-                                <li>
-                                    <a th:href="@{/profiles/{profile}(profile=${currentAccount.profile})}" alt="Profile" title="Profile page">
+                                <a th:href="@{/profiles/{profile}(profile=${currentAccount.profile})}" alt="Profile" title="Profile page">
+                                    <li>
+
                                         <i class="fas fa-user"></i>
                                         <i class="fas fa-user"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a th:href="@{/profiles/{profile}/contacts(profile=${currentAccount.profile})}" title="Contacts">
+
+                                    </li>
+                                </a>
+                                <a th:href="@{/profiles/{profile}/contacts(profile=${currentAccount.profile})}" title="Contacts">
+                                    <li>
+
                                         <i class="fas fa-users"></i>
                                         <i class="fas fa-users"></i>
-                                    </a>
-                                    
-                                </li>
-                                <li>
-                                    <a th:href="@{/messages}" title="Messages">
+
+                                    </li>
+                                </a>
+                                <a th:href="@{/messages}" title="Messages">
+                                    <li>
+
                                         <i class="fas fa-comments"></i>
                                         <i class="fas fa-comments"></i>
-                                    </a>
-                                    
-                                </li>
-                                <li>
-                                    <a th:href="@{/searchpage}" title="Search user">
+
+                                    </li>
+                                </a>
+                                <a th:href="@{/searchpage}" title="Search user">
+                                    <li>
+
                                         <i class="fas fa-search"></i>
                                         <i class="fas fa-search"></i>
-                                    </a>
-                                    
-                                </li>
-                                <li>
-                                    <form th:action="@{/logout}" method="POST">
+
+                                    </li>
+                                </a>
+                                <form th:action="@{/logout}" method="POST">
+                                    <li>
+
                                         <button id="logoutButton" title="Log out">
                                             <i class="fas fa-sign-out-alt"></i>
                                             <i class="fas fa-sign-out-alt"></i>
                                         </button>
-                                    </form>
-                                    
-                                </li>
+
+                                    </li>
+                                </form>
                             </ul>
                         </div>
                     </div>

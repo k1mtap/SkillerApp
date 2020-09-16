@@ -24,16 +24,14 @@ public class MessageController {
     @GetMapping("/messages")
     public String showMessagesAndComments(Model model, @RequestParam(defaultValue = "0") Integer msgPage) {
         
-//        , @RequestParam(defaultValue = "0") Integer cmtPage
-        
         Account currentAccount = accountService.getCurrentAccount();
 
         Page<Message> messagePage = messageService.getAllContactMessages(currentAccount, msgPage);
-//        List<Page<Comment>> commentPagesForMessages = messageService.getAllMessageComments(cmtPage);
+        List<Page<Comment>> commentPagesForMessages = messageService.getAllMessageComments();
         
         model.addAttribute("currentAccount", currentAccount);
         model.addAttribute("messagePage", messagePage);
-//        model.addAttribute("commentPages", commentPagesForMessages);
+        model.addAttribute("commentPages", commentPagesForMessages);
 
         return "messages";
     }
@@ -49,7 +47,7 @@ public class MessageController {
     public String addLikeToMessage(@PathVariable("id") Long id) {
 
         messageService.addLikeToMessage(id);
-        return "redirect:/messages";
+        return "redirect:/messages#" + id;
     }
 
     @DeleteMapping("/messages/{id}")

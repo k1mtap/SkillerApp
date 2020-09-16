@@ -18,25 +18,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
-//@NamedEntityGraph(
-//        name = "message-entity-graph-with-comment-users-likes",
-//        attributeNodes = {
-//            @NamedAttributeNode("content"),
-//            @NamedAttributeNode("date"),
-//            @NamedAttributeNode("account"),
-//            @NamedAttributeNode("likes"),
-//            @NamedAttributeNode(value = "comments", subgraph = "comments-subgraph"),},
-//        subgraphs = {
-//            @NamedSubgraph(
-//                    name = "comments-subgraph",
-//                    attributeNodes = {
-//                        @NamedAttributeNode("account"),
-//                        @NamedAttributeNode("likes")
-//                    }
-//            )
-//        }
-//)
-
 @Entity
 @Data
 @NoArgsConstructor

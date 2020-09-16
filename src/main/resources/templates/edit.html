@@ -22,15 +22,15 @@
                             </a>
                         </div>
                     </div>
-                    
+
                     <hr/>
-                    
+
                     <!--EDIT-OSA-->
                     <div class="row d-flex justify-content-center">
                         <div class="col-6 component d-flex justify-content-center">
                             <form th:if="${currentAccount.image == null}" th:action="@{/profiles/{profile}/image(profile=${currentAccount.profile})}" method="POST" enctype="multipart/form-data">
                                 <input type="file" class="inputfile" name="image" id="image" placeholder="Add a skill"/>
-                                <label for="image">Add a png picture</label>
+                                <label for="image">Add png/jpeg</label>
                                 <button class="normalButton" title="Add a picture"><i class="fas fa-plus-circle"></i></button>
                             </form>
                         </div>
@@ -48,9 +48,9 @@
                         <div class="col-5 component d-flex justify-content-center align-items-center">
                             <div class="row d-flex justify-content-center">
                                 <div class="col-auto component" th:if="${currentAccount.image != null}">
-                                    <a th:href="@{/profiles/{profile}/image/delete(profile=${currentAccount.profile})}" title="Delete picture">
-                                        <i class="fas fa-minus-circle deleteButton"></i>
-                                    </a>
+                                    <form th:action="@{/profiles/{profile}/image(profile = ${currentAccount.profile})}" th:method="DELETE">
+                                        <button class="deleteButton" type="submit" title="Delete picture"><i class="fas fa-minus-circle deleteButton"></i></button>
+                                    </form> 
                                 </div>
                                 <!--TODO - toistoa edit sivun kanssa? fragment?-->
                                 <div class="col-7 component">

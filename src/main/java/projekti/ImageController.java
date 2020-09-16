@@ -1,9 +1,10 @@
-
 package projekti;
 
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,35 +14,33 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class ImageController {
-    
+
     @Autowired
     private AccountRepository accountRepository;
-    
+
     @Autowired
     private ImageRepository imageRepository;
-    
+
     @PostMapping("/profiles/{profile}/image")
     public String addImage(@RequestParam("image") MultipartFile file, @PathVariable String profile) throws IOException {
 
-        // TODO - useampi tiedostotyyppi?
-        if (!file.getContentType().equals("image/png")) {
-            // TODO - viesti käyttäjälle, että kuva on väärää tyyppiä
-            return "redirect:/profiles/" + profile + "/edit";
+        if (file.getContentType().equals("image/png") || file.getContentType().equals("image/jpeg")) {
+
+            Image i = new Image();
+            i.setContent(file.getBytes());
+            imageRepository.save(i);
+
+            Account a = accountRepository.findByProfile(profile);
+            a.setImage(i);
+            accountRepository.save(a);
+
+            return "redirect:/profiles/" + profile + "/skills";
         }
-
-        Image i = new Image();
-        i.setContent(file.getBytes());
-        imageRepository.save(i);
-
-        Account a = accountRepository.findByProfile(profile);
-        a.setImage(i);
-        accountRepository.save(a);
 
         return "redirect:/profiles/" + profile + "/skills";
     }
-    
-//    TODO - muuta @DeleteMapping (html:ään form ja method="DELETE") ja tarkista polku, pelkkä /image?
-    @GetMapping("/profiles/{profile}/image/delete")
+
+    @DeleteMapping("/profiles/{profile}/image")
     public String deleteImage(@PathVariable String profile) throws IOException {
 
         Account a = accountRepository.findByProfile(profile);
@@ -53,10 +52,10 @@ public class ImageController {
         return "redirect:/profiles/" + profile + "/skills";
     }
 
-    @GetMapping(path = "/profiles/{profile}/image/content", produces = "image/png")
+    @GetMapping(path = "/profiles/{profile}/image/content", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     @ResponseBody
     public byte[] getContent(@PathVariable String profile) {
-        
+
         return accountRepository.findByProfile(profile).getImage().getContent();
     }
 }
