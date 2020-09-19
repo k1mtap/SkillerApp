@@ -18,11 +18,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
-    // TODO - laita metodi kuntoon, ylimääräiset roskat pois ja tarvittavat lisäykset
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // poistetaan csrf-tarkistus käytöstä h2-konsolin vuoksi
-        http.csrf().disable();
+        // http.csrf().disable();
         // sallitaan framejen käyttö
         http.headers().frameOptions().sameOrigin();
 
@@ -37,7 +36,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/profiles")
-                // TODO - tarvitaan login error ja logout sivut
                 .and()
                 .logout().permitAll()
                 .logoutSuccessUrl("/index");

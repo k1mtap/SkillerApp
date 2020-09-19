@@ -1,5 +1,9 @@
-package projekti;
+package projekti.controller;
 
+import projekti.service.SkillService;
+import projekti.service.AccountService;
+import projekti.domain.Skill;
+import projekti.domain.Account;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

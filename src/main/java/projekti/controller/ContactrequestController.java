@@ -1,5 +1,8 @@
-package projekti;
+package projekti.controller;
 
+import projekti.service.ContactrequestService;
+import projekti.service.AccountService;
+import projekti.domain.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,14 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-public class ContactController {
+public class ContactrequestController {
 
     @Autowired
-    private ContactService contactService;
-
+    private ContactrequestService contactrequestService;
     @Autowired
     private AccountService accountService;
-    
+
     @GetMapping("/profiles/{profile}/contacts")
     public String getAllContacts(Model model, @PathVariable String profile) {
 
@@ -24,7 +26,6 @@ public class ContactController {
 
         if (user == currentAccount) {
             model.addAttribute("currentAccount", currentAccount);
-//            model.addAttribute("contactDoneOrPending", contactService.contactAlreadyDoneOrPending(currentUser, user));
             return "contacts";
         }
 
@@ -37,7 +38,7 @@ public class ContactController {
         Account askingAccount = accountService.getCurrentAccount();
         Account targetAccount = accountService.getUser(profile);
 
-        contactService.sendContactRequest(askingAccount, targetAccount);
+        contactrequestService.sendContactRequest(askingAccount, targetAccount);
 
         return "redirect:/profiles/" + profile;
     }
@@ -45,24 +46,24 @@ public class ContactController {
     @GetMapping("/profiles/{profile}/contacts/{id}/approve_contact")
     public String approveContact(@PathVariable String profile, @PathVariable Long id) {
 
-        contactService.approveContact(id);
+        contactrequestService.approveContact(id);
 
         return "redirect:/profiles/" + profile + "/contacts";
     }
 
     @GetMapping("/profiles/{profile}/contacts/{id}/decline_contact")
     public String declineContact(@PathVariable String profile, @PathVariable Long id) {
-        
-        contactService.declineContact(id);
-        
+
+        contactrequestService.declineContact(id);
+
         return "redirect:/profiles/" + profile + "/contacts";
     }
-    
+
     @DeleteMapping("/profiles/{profile}/contacts/{id}")
     public String deleteContact(@PathVariable String profile, @PathVariable Long id) {
-        System.out.println("Aloitetan kontaktin poisto");
-        contactService.deleteContact(id);
-        System.out.println("Valmis -> redirect");
+
+        contactrequestService.deleteContact(id);
+
         return "redirect:/profiles/" + profile + "/contacts";
     }
 }

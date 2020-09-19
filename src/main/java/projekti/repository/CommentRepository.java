@@ -1,7 +1,7 @@
-package projekti;
+package projekti.repository;
 
+import projekti.domain.Comment;
 import java.math.BigInteger;
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +17,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Modifying
     @Query(value = "DELETE FROM Comment C WHERE C.message_id = :id", nativeQuery = true)
     void deleteMessageComments(Long id);
+    
+    @Modifying
+    @Query(value = "DELETE FROM Comment_Like CL WHERE CL.comment_id IN (SELECT C.id FROM Comment C WHERE C.message_id = :id)", nativeQuery = true)
+    void deleteMessageCommentsLikes(Long id);
 }

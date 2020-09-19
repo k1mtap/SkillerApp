@@ -1,5 +1,6 @@
-package projekti;
+package projekti.repository;
 
+import projekti.domain.Account;
 import java.util.List;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,11 +14,13 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     @EntityGraph(attributePaths = {"image"})
     Account getContactById(Long id);
-            
+    
+    @EntityGraph(attributePaths = {"image"})
+    @Override
+    List<Account> findAll();
+    
     Account findByUsername(String username);
 
-    List<Account> findAllByName(String name);
-
-    @Query(value = "SELECT * FROM Account a WHERE LOWER(a.name) LIKE %:keyword%", nativeQuery = true)
+    @Query(value = "SELECT * FROM Account A WHERE LOWER(A.name) LIKE %:keyword%", nativeQuery = true)
     List<Account> findByKeyword(@Param("keyword") String keyword);
 }

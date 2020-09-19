@@ -95,7 +95,7 @@ span .fas.fa-bars {
 
 main  {
     margin-top: 8%;
-    /*margin-bottom: 15%;*/
+    margin-bottom: 8%;
 }
 
 .content-area {
@@ -127,18 +127,6 @@ main  {
 .content-area .row {
     margin: 0 0 20px 0;
     padding-bottom: 20px;
-}
-
-.content-area .col-2.text-right {
-    padding: 0;
-}
-
-.component {
-    padding: 0;
-}
-
-.content-area .addSkill {
-    text-align: end;
 }
 
 .content-area .addSkill input {
@@ -198,10 +186,10 @@ main  {
     border-radius: .25rem;
 }
 
-
 .highlight {
     background: rgb(106, 163, 176, 0.33);
 }
+
 .fourthSkill {
     border-top: 1px solid #2B4560;
 }
@@ -231,21 +219,7 @@ input:-moz-placeholder {
     color: #2B4560;
 }
 
-.navbar a {
-    color: white;
-}
-.navbar a:hover {
-    text-decoration: underline;
-}
-
-.sectionImage {
-    background-image: url("/images/section2.jpg");
-    width: 100%;
-    height: 40%;
-    object-fit: cover;
-}
-
-.contact-name {
+.contact {
     width: 150px;
 }
 

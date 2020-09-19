@@ -1,5 +1,5 @@
 
-package projekti;
+package projekti.domain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,6 @@ public class Account extends AbstractPersistable<Long>{
     @OneToOne
     private Image image;
     
-//    TODO - keksi parempi nimi kuin contacts, esim doneContacts, tai vaihtoehtoisesti muuta Contact-entiteetin nimeä esim Connecting tms
     @JoinTable(
             name = "Contacts",
             joinColumns = @JoinColumn(name = "account1_id", referencedColumnName = "id"),
@@ -53,11 +52,10 @@ public class Account extends AbstractPersistable<Long>{
     @ManyToMany
     private List<Account> contacts = new ArrayList<>();
     
-//    TODO - jointable(contactrequests) ja joincolumn?
     @OneToMany(mappedBy = "askingAccount")
-    private List<Contact> sentContacts = new ArrayList<>();
+    private List<Contactrequest> sentContactRequests = new ArrayList<>();
     
     @OneToMany(mappedBy = "targetAccount")
-    private List<Contact> receivedContacts = new ArrayList<>();
+    private List<Contactrequest> receivedContactRequests = new ArrayList<>();
     
 }

@@ -1,6 +1,7 @@
 
-package projekti;
+package projekti.repository;
 
+import projekti.domain.Skill;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,6 +21,4 @@ public interface SkillRepository extends JpaRepository<Skill, Long>{
             + "GROUP BY S.id "
             + "ORDER BY COUNT(SP.praised_by_account_id) DESC, S.content", nativeQuery = true)
     List<Skill> findByAccountInOrderDesc(Long account_id);
-    
-//    ONKO TÄSSÄ VIRHE, GROUP BY S.CONTENT -> S.ID
 }

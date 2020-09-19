@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="fragments/layout :: head" lang="en">
+    <head th:replace="fragments/layout :: head(title='SkillerApp - Search a user')" lang="en">
         <title>Otikko</title>
     </head>
     <body>
@@ -21,20 +21,20 @@
                     
                     <!--SISÄLTÖ-->
                     <div class="col">
-                        <div class="col component">
+                        <div class="col p-0">
                             <form class="form-inline my-2 my-lg-0 content-center pb-4" th:action="@{/search}" method="GET">
                                 <input class="search-input" type="search" name="keyword" placeholder="Search users"/>
                                 <button class="normalButton"><i class="fas fa-search"></i></button>
                             </form>
                         </div>
 
-                        <div th:if="${accounts != null}" class="col component">
+                        <div th:if="${accounts != null}" class="col p-0">
                             <table class="content-center">
                                 <tbody>
                                     <tr th:each="account : ${accounts}">
                                         <td style="width: 50px;">
                                             <img th:if="${account.image == null}" th:src="@{/images/no_image.png}" width="100%"/>
-                                            <img th:unless="${account.image == null}" th:src="@{/profiles/{profile}/image/content(profile=${account.profile})}" width="100%"/>
+                                            <img th:unless="${account.image == null}" th:src="@{/profiles/{profile}/image(profile=${account.profile})}" width="100%"/>
                                         </td>
                                         <td>
                                             <a th:href="@{/profiles/{profile}/(profile = ${account.profile})}" class="normalButton">

@@ -1,5 +1,6 @@
-package projekti;
+package projekti.domain;
 
+import projekti.domain.Account;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

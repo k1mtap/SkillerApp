@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="fragments/layout :: head" lang="en">
+    <head th:replace="fragments/layout :: head(title='SkillerApp - Messages')" lang="en">
         <title>Otsikko</title>
     </head>
     <body>
@@ -42,7 +42,7 @@
                                             <!--MESSAGE PROFILE PICTURE-->
                                             <td style="width: 50px;">
                                                 <img th:if="${message.account.image == null}" th:src="@{/images/no_image.png}" width="100%"/>
-                                                <img th:unless="${message.account.image == null}" th:src="@{/profiles/{profile}/image/content(profile=${message.account.profile})}" width="100%"/>
+                                                <img th:unless="${message.account.image == null}" th:src="@{/profiles/{profile}/image(profile=${message.account.profile})}" width="100%"/>
                                             </td>
 
                                             <!--MESSAGE SENDER-->
@@ -64,17 +64,17 @@
 
                                             <!--MESSAGE LIKE BUTTON-->
                                             <td class="pr-0 pr-xl-2">
-                                                <form th:if="${message.likes.contains(currentAccount)}" th:action="@{/messages/{id}(id = ${message.id})}" th:method="PUT">
+                                                <form th:if="${message.likes.contains(currentAccount)}" th:action="@{/messages/{id}(msgPage = ${messagePage.number}, id = ${message.id})}" th:method="PUT">
                                                     <button class="deleteButton" title="Remove like"><i class="fas fa-thumbs-down"></i></button>
                                                 </form>
-                                                <form th:unless="${message.likes.contains(currentAccount)}" th:action="@{/messages/{id}(id = ${message.id})}" th:method="PUT">
+                                                <form th:unless="${message.likes.contains(currentAccount)}" th:action="@{/messages/{id}(msgPage = ${messagePage.number}, id = ${message.id})}" th:method="PUT">
                                                     <button class="normalButton" title="Like"><i class="fas fa-thumbs-up"></i></button>
                                                 </form>
                                             </td>
 
                                             <!--MESSAGE DELETE-->
                                             <td class="pl-0 pl-md-2 pl-lg-4">
-                                                <form th:if="${currentAccount == message.account}" th:action="@{/messages/{id}(id = ${message.id})}" th:method="DELETE">
+                                                <form th:if="${currentAccount == message.account}" th:action="@{/messages/{id}(msgPage = ${messagePage.number}, id = ${message.id})}" th:method="DELETE">
                                                     <button class="deleteButton pr-0" title="Delete message"><i class="fas fa-minus-circle"></i></button>
                                                 </form>
                                             </td>
@@ -86,7 +86,6 @@
                         </div>
 
                         <!--MESSAGE CONTENT-->
-                        <!--TODO - message.id oli sen takia, että jos voi tykkäyksen jälkeen mennä suoraan kohtaan /sivu/messages#id, kokeile voiko toiminnon toteuttaa controlleriin return "redirect:/... #id..-->
                         <div class="row mb-0 pb-3">
                             <div class="col-11 col-md-10 col-lg-9 col-xl-9 pl-1 pr-1 mb-0 message-content">
                                 <p class="forum-text" th:text="${message.content}">message content</p>
@@ -109,7 +108,7 @@
                                                         <!--COMMENT PROFILE PICTURE-->
                                                         <td style="width: 25px;">
                                                             <img th:if="${comment.account.image == null}" th:src="@{/images/no_image.png}" width="100%"/>
-                                                            <img th:unless="${comment.account.image == null}" th:src="@{/profiles/{profile}/image/content(profile=${comment.account.profile})}" width="100%"/>
+                                                            <img th:unless="${comment.account.image == null}" th:src="@{/profiles/{profile}/image(profile=${comment.account.profile})}" width="100%"/>
                                                         </td>
 
                                                         <!--COMMENT SENDER-->
@@ -125,23 +124,23 @@
                                                         </td>
 
                                                         <!--COMMENT NUMBER OF LIKES-->
-                                                        <td class="pr-0 pl-md-2 pl-lg-3">
+                                                        <td th:id="${comment.id}" class="pr-0 pl-md-2 pl-lg-3">
                                                             <span th:text="${#lists.size(comment.likes)}">likes</span>
                                                         </td>
 
                                                         <!--COMMENT LIKE-->
                                                         <td class="pr-0 pr-xl-2">
-                                                            <form th:if="${comment.likes.contains(currentAccount)}" th:action="@{/messages/{id}/comments/{commentId}(id = ${message.id}, commentId = ${comment.id})}" th:method="PUT">
+                                                            <form th:if="${comment.likes.contains(currentAccount)}" th:action="@{/messages/{id}/comments/{commentId}(msgPage = ${messagePage.number}, id = ${message.id}, commentId = ${comment.id})}" th:method="PUT">
                                                                 <button class="deleteButton commentButton" title="Remove like"><i class="fas fa-thumbs-down"></i></button>
                                                             </form>
-                                                            <form th:unless="${comment.likes.contains(currentAccount)}" th:action="@{/messages/{id}/comments/{commentId}(id = ${message.id}, commentId = ${comment.id})}" th:method="PUT">
+                                                            <form th:unless="${comment.likes.contains(currentAccount)}" th:action="@{/messages/{id}/comments/{commentId}(msgPage = ${messagePage.number}, id = ${message.id}, commentId = ${comment.id})}" th:method="PUT">
                                                                 <button class="normalButton commentButton" title="Like"><i class="fas fa-thumbs-up"></i></button>
                                                             </form>
                                                         </td>
 
                                                         <!--COMMENT DELETE-->
                                                         <td class="pl-0 pl-md-2 pl-lg-4">
-                                                            <form th:if="${currentAccount == comment.account}" th:action="@{/messages/{id}/comments/{commentId}(id = ${message.id}, commentId = ${comment.id})}" th:method="DELETE">
+                                                            <form th:if="${currentAccount == comment.account}" th:action="@{/messages/{id}/comments/{commentId}(msgPage = ${messagePage.number}, id = ${message.id}, commentId = ${comment.id})}" th:method="DELETE">
                                                                 <button class="deleteButton commentButton pr-0" title="Delete comment"><i class="fas fa-minus-circle"></i></button>
                                                             </form>
                                                             <i th:unless="${currentAccount == comment.account}" class="fas fa-minus-circle" style="opacity: 0;"></i>
@@ -165,7 +164,7 @@
                         <!--ADD COMMENT-->
                         <div class="row d-flex justify-content-end mb-0 pb-1 mt-2 pl-0">
                             <div class="col-10 col-md-9 col-lg-8 col-xl-7 px-0">
-                                <form class="text-area" th:action="@{/messages/{id}/comments(id = ${message.id})}" method="POST">
+                                <form class="text-area" th:action="@{/messages/{id}/comments(msgPage = ${messagePage.number}, id = ${message.id})}" method="POST">
                                     <textarea name="content" placeholder="add a comment" cols="50"></textarea>
                                     <button class="normalButton">
                                         <i class="fas fa-comment-dots"></i>
@@ -177,15 +176,13 @@
                     </div>
 
                     <!--MESSAGES NEXT AND PREVIOUS PAGES-->
-
-
                     <div class="row d-flex justify-content-center">
                         <div class="col-4 d-flex justify-content-end align-items-center">
                             <a th:if="${messagePage.hasPrevious()}" th:href="@{/messages(msgPage = ${messagePage.number} - 1)}" class="normalButton headerButton">
                                 <i class="fas fa-angle-double-left d-flex"></i>
                             </a>
                         </div>
-                        <div class="col-3 d-flex justify-content-center align-items-center">
+                        <div th:if="${totalPages > 0}" class="col-3 d-flex justify-content-center align-items-center">
                             <span th:if="${messagePage.totalPages == 0}">page 1 of 1</span>
                             <span th:unless="${messagePage.totalPages == 0}">page [[${messagePage.number} + 1]] of [[${messagePage.totalPages}]]</span>
                         </div>

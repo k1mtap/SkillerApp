@@ -1,5 +1,7 @@
-package projekti;
+package projekti.controller;
 
+import projekti.service.ImageService;
+import projekti.service.AccountService;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,23 +18,16 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageController {
 
     @Autowired
-    private AccountRepository accountRepository;
-
+    private AccountService accountService;
     @Autowired
-    private ImageRepository imageRepository;
+    private ImageService imageService;
 
     @PostMapping("/profiles/{profile}/image")
     public String addImage(@RequestParam("image") MultipartFile file, @PathVariable String profile) throws IOException {
 
         if (file.getContentType().equals("image/png") || file.getContentType().equals("image/jpeg")) {
 
-            Image i = new Image();
-            i.setContent(file.getBytes());
-            imageRepository.save(i);
-
-            Account a = accountRepository.findByProfile(profile);
-            a.setImage(i);
-            accountRepository.save(a);
+            imageService.addImage(file, profile);
 
             return "redirect:/profiles/" + profile + "/skills";
         }
@@ -43,19 +38,15 @@ public class ImageController {
     @DeleteMapping("/profiles/{profile}/image")
     public String deleteImage(@PathVariable String profile) throws IOException {
 
-        Account a = accountRepository.findByProfile(profile);
-        Image i = a.getImage();
-        a.setImage(null);
-        imageRepository.delete(i);
-        accountRepository.save(a);
+        imageService.deleteImage(profile);
 
         return "redirect:/profiles/" + profile + "/skills";
     }
 
-    @GetMapping(path = "/profiles/{profile}/image/content", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+    @GetMapping(path = "/profiles/{profile}/image", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     @ResponseBody
     public byte[] getContent(@PathVariable String profile) {
 
-        return accountRepository.findByProfile(profile).getImage().getContent();
+        return accountService.getImage(profile);
     }
 }
