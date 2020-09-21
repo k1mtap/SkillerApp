@@ -10,7 +10,7 @@
             <main>
                 <div class="col-11 content-area">
 
-                    <!--OTSAKE-->
+                    <!--TITLE-->
                     <div class="row align-items-center pt-2">
                         <div class="col-10">
                             <h1><span th:text="${account.name}">name</span></h1>
@@ -27,10 +27,9 @@
                     
                     <hr/>
                     
-                    <!--SISÄLTÖ-->
+                    <!--CONTENT-->
                     <div class="row">
                         <div class="col-5 p-0 d-flex justify-content-center align-items-center">
-                            <!--TODO - toistoa edit sivun kanssa? fragment?-->
                             <div class="col-7 p-0">
                                 <img th:if="${account.image != null}" th:src="@{/profiles/{profile}/image(profile=${account.profile})}" width="100%"/>
                                 <img th:unless="${account.image != null}" th:src="@{/images/no_image.png}" width="100%"/>
@@ -50,10 +49,10 @@
                                             </td>
                                             <td class="praise">
                                                 <form th:if="${skill.praises.contains(currentAccount)}" th:action="@{/profiles/{profile}/skills/{id}(profile = ${account.profile}, id = ${skill.id})}" th:method="PUT">
-                                                    <button class="deleteButton" title="Remove like"><i class="fas fa-thumbs-down"></i></button>
+                                                    <button id="addPraise" class="deleteButton" title="Remove like"><i class="fas fa-thumbs-down"></i></button>
                                                 </form>
                                                 <form th:unless="${skill.praises.contains(currentAccount)}" th:action="@{/profiles/{profile}/skills/{id}(profile = ${account.profile}, id = ${skill.id})}" th:method="PUT">
-                                                    <button class="normalButton" title="Like"><i class="fas fa-thumbs-up"></i></button>
+                                                    <button id="removePraise" class="normalButton" title="Like"><i class="fas fa-thumbs-up"></i></button>
                                                 </form>
                                             </td>
                                         </tr>

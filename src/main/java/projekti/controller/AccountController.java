@@ -74,7 +74,7 @@ public class AccountController {
             return "redirect:/login";
         }
 
-        return "redirect:/profiles/";
+        return "redirect:/profiles";
     }
 
     @GetMapping("/profiles")

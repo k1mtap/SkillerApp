@@ -10,7 +10,7 @@
             <main>
                 <div class="col-10 col-md-8 col-lg-7 col-xl-6 content-area pb-2">
 
-                    <!--OTSAKE-->
+                    <!--TITLE-->
                     <div class="row d-flex justify-content-center">
                         <div class="col-auto text-center">
                             <h1>Your contacts</h1>
@@ -19,7 +19,7 @@
                     
                     <hr/>
                     
-                    <!--SISÄLTÖ-->
+                    <!--CONTENT-->
                     <div class="col">
                         <div class="col p-0">
                             <div th:if="${currentAccount.contacts.size() == 0
@@ -27,6 +27,8 @@
                                  && currentAccount.sentContactRequests.size() == 0}" class="text-center">
                                 No contacts yet! Please make a contactrequest from the user's profile page!
                             </div>
+                            
+                            <!--CONTACTS-->
                             <table>
                                 <tbody>
                                     <tr th:each="contact : ${currentAccount.contacts}">
@@ -51,7 +53,7 @@
                         </div>
 
                         
-
+                        <!--RECEIVED CONTACTREQUESTS-->
                         <div th:if="${currentAccount.receivedContactRequests.size() > 0}" class="col p-0">
                             <h4>Waiting for your action</h4>
                             <table>
@@ -82,7 +84,7 @@
                         </div>
 
                         
-
+                        <!--SENT CONTACTREQUESTS-->
                         <div th:if="${currentAccount.sentContactRequests.size() > 0}" class="col p-0">
                             <h4>Waiting for contact's action</h4>
                             <table>

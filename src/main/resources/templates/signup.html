@@ -13,19 +13,19 @@
                     <hr/>
                     <form class="col col-auto text-center" th:action="@{/signup}" th:object="${account}" method="POST">
                         <div class="form-group">
-                            <input type="text" class="form-input" th:field="*{username}" placeholder="username"/>
+                            <input type="text" class="form-input" th:field="*{username}" id="username" placeholder="username"/>
                             <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="form-text text-danger">virheviesti</small>
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-input" th:field="*{password}" placeholder="password"/>
+                            <input type="password" class="form-input" th:field="*{password}" id="password" placeholder="password"/>
                             <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="form-text text-danger">virheviesti</small>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-input" th:field="*{name}" placeholder="name"/>
+                            <input type="text" class="form-input" th:field="*{name}" id="name" placeholder="name"/>
                             <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="form-text text-danger">virheviesti</small>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-input" th:field="*{profile}" placeholder="profile name"/>
+                            <input type="text" class="form-input" th:field="*{profile}" id="profile" placeholder="profile name"/>
                             <small th:if="${#fields.hasErrors('profile')}" th:errors="*{profile}" class="form-text text-danger">virheviesti</small>
                         </div>
                         <button type="submit" class="normalButton headerButton"><i class="fas fa-user-plus"></i></button>
@@ -34,36 +34,5 @@
             </main>
         </div>
 
-
-        <!--        <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col col-auto">
-                            <h2>Sign Up!</h2>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col col-auto">
-                            <form class="col col-auto" th:action="@{/signup}" th:object="${account}" method="POST">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" th:field="*{username}" placeholder="username"/>
-                                    <small th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="form-text text-danger">virheviesti</small>
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" class="form-control" th:field="*{password}" placeholder="password"/>
-                                    <small th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="form-text text-danger">virheviesti</small>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" th:field="*{name}" placeholder="name"/>
-                                    <small th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="form-text text-danger">virheviesti</small>
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" th:field="*{profile}" placeholder="profile name"/>
-                                    <small th:if="${#fields.hasErrors('profile')}" th:errors="*{profile}" class="form-text text-danger">virheviesti</small>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Sign up!</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>-->
     </body>
 </html>

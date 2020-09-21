@@ -11,7 +11,7 @@
             <main>
                 <div class="col-11 content-area">
 
-                    <!--OTSAKE-->
+                    <!--TITLE-->
                     <div class="row align-items-center pt-2">
                         <div class="col-10">
                             <h1><span th:text="${account.name}">name</span></h1>
@@ -25,7 +25,7 @@
 
                     <hr/>
 
-                    <!--EDIT-OSA-->
+                    <!--EDIT IMAGE/SKILL-->
                     <div class="row d-flex justify-content-center">
                         <div class="col-6 p-0 d-flex justify-content-center">
                             <form th:if="${currentAccount.image == null}" th:action="@{/profiles/{profile}/image(profile=${currentAccount.profile})}" method="POST" enctype="multipart/form-data">
@@ -35,7 +35,7 @@
                             </form>
                         </div>
                         <div class="col-6 p-0 d-flex justify-content-center addSkill">
-                            <form th:action="@{/profiles/{profile}/skills(profile=${currentAccount.profile})}" th:object="${skill}" method="POST">
+                            <form th:action="@{/profiles/{profile}/skills(profile=${currentAccount.profile})}" id="skillForm" th:object="${skill}" method="POST">
                                 <input type="text" th:field="*{content}" class="skillInput" placeholder="Add a skill"/>
                                 <small th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="form-text text-danger">virheviesti</small>
                                 <button class="normalButton" title="Add a skill"><i class="fas fa-plus-circle"></i></button>
@@ -43,7 +43,7 @@
                         </div>
                     </div>
 
-                    <!--SISÄLTÖ-->
+                    <!--CONTENT-->
                     <div class="row">
                         <div class="col-5 p-0 d-flex justify-content-center align-items-center">
                             <div class="row d-flex justify-content-center">
@@ -52,7 +52,6 @@
                                         <button class="deleteButton" type="submit" title="Delete picture"><i class="fas fa-minus-circle deleteButton"></i></button>
                                     </form> 
                                 </div>
-                                <!--TODO - toistoa edit sivun kanssa? fragment?-->
                                 <div class="col-7 p-0">
                                     <img th:if="${account.image != null}" th:src="@{/profiles/{profile}/image(profile=${account.profile})}" width="100%"/>
                                     <img th:unless="${account.image != null}" th:src="@{/images/no_image.png}" width="100%"/>
@@ -88,55 +87,6 @@
 
         </div>
 
-        <!--TODO - käyttäjän oma sivu, modelina saatava käyttäjä-->
-        <!--        <div class="container">
-                    <h2>Profile</h2>
-        
-                    <p>Tervetuloa <span th:text="${currentAccount.profile}">profiili</span>!</p>
-        
-                    <div>
-                        <a th:href="@{/profiles/{profile}(profile=${currentAccount.profile})}"><button class="btn btn-sm btn-success">back</button></a>
-                    </div>
-        
-                    <div class="card" style="width: 18rem;">
-                        <div>
-                            <img th:if="${currentAccount.image != null}" th:src="@{/profiles/{profile}/image/content(profile=${currentAccount.profile})}" width="200" height="200"/>
-                            <img th:unless="${currentAccount.image != null}" th:src="@{/images/no_image.png}" width="200" height="200"/>
-                            <div th:if="${currentAccount.image != null}">
-                                <a th:href="@{/profiles/{profile}/image/delete(profile=${currentAccount.profile})}"><button class="btn btn-sm btn-danger">delete image</button></a>
-                            </div>
-                        </div>
-                        <div th:if="${currentAccount.image == null}">
-                            <form th:action="@{/profiles/{profile}/image(profile=${currentAccount.profile})}" method="POST" enctype="multipart/form-data">
-                                <input type="file" name="image"/>
-                                <button class="btn btn-sm btn-primary">add image</button>
-                            </form>
-                        </div>
-        
-                        <div class="card-body">
-                            <h5 class="card-title">Skills</h5>
-                            <table id="skillTable" class="table table-borderless">
-                                <tbody>
-                                    TODO - eri kuin profiilissa.. onko ok?
-                                    <tr th:each="skill : ${currentAccount.skills}">
-                                        <td>
-                                            TODO - fontawesomesta tms icon tähän
-                                            <form th:action="@{/profiles/{profile}/skills/{id}/delete(profile = ${currentAccount.profile}, id = ${skill.id})}" th:method="delete">
-                                                <button class="btn btn-sm btn-danger" type="submit">del</button>
-                                            </form> 
-                                        </td>
-                                        <td th:text="${skill.content}">skill</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <form th:action="@{/profiles/{profile}/skills(profile=${currentAccount.profile})}" th:object="${skill}" method="POST">
-                                <input type="text" th:field="*{content}" placeholder="add a skill"/>
-                                <small th:if="${#fields.hasErrors('content')}" th:errors="*{content}" class="form-text text-danger">virheviesti</small>
-                                <input type="submit" value="add"/>
-                            </form>
-                        </div>
-                    </div>
-                </div>-->
         <script type="text/javascript" th:src="@{/javascript/profile.js}" defer></script>
     </body>
 </html>

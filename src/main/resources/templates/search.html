@@ -10,7 +10,7 @@
             <main>
                 <div class="col-10 col-md-8 col-lg-7 col-xl-6 content-area pb-5">
 
-                    <!--OTSAKE-->
+                    <!--TITLE-->
                     <div class="row d-flex justify-content-center">
                         <div class="col-auto text-center">
                             <h1>Search users</h1>
@@ -19,7 +19,7 @@
                     
                     <hr/>
                     
-                    <!--SISÄLTÖ-->
+                    <!--SEARCH FORM-->
                     <div class="col">
                         <div class="col p-0">
                             <form class="form-inline my-2 my-lg-0 content-center pb-4" th:action="@{/search}" method="GET">
@@ -27,7 +27,8 @@
                                 <button class="normalButton"><i class="fas fa-search"></i></button>
                             </form>
                         </div>
-
+                        
+                        <!--SEARCH RESULTS-->
                         <div th:if="${accounts != null}" class="col p-0">
                             <table class="content-center">
                                 <tbody>
