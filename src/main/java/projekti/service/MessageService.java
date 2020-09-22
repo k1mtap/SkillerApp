@@ -3,11 +3,8 @@ package projekti.service;
 import projekti.domain.Message;
 import projekti.domain.Comment;
 import projekti.domain.Account;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import projekti.repository.CommentRepository;
 import projekti.repository.MessageRepository;
 
@@ -29,7 +25,8 @@ public class MessageService {
     @Autowired
     private AccountService accountService;
 
-//  ====== MESSAGES ======    
+//  ====== MESSAGES ======   
+    
     public Message getOne(Long id) {
         return messageRepository.getOne(id);
     }
@@ -64,22 +61,7 @@ public class MessageService {
         messageRepository.save(message);
     }
 
-//    public List<Integer> getLikesForMessage() {
-//        
-//        List<Integer> likesForMessages = new ArrayList<>();
-//        List<BigInteger> messageIds = messageRepository.findAllContactMessagesIds(accountService.getCurrentAccount().getId());
-//        
-//        for (BigInteger id : messageIds) {
-//
-//            int likes = messageRepository.getLikesForMessage(id);
-//
-//            likesForMessages.add(likes);
-//        }
-//        
-//        return likesForMessages;
-//    }
-    
-    public Integer getLikes(@PathVariable Long id) {
+    public Integer getLikesForMessages(@PathVariable Long id) {
 
         return messageRepository.getLikesForMessage(id);
     }
@@ -99,25 +81,7 @@ public class MessageService {
     }
 
 //  ====== COMMENTS ======
-//    public List<List<Comment>> getAllMessageComments() {
-//
-//
-//        List<List<Comment>> commentListsForMessages = new ArrayList<>();
-//        List<BigInteger> messageIds = messageRepository.findAllContactMessagesIds(accountService.getCurrentAccount().getId());
-//
-//        for (BigInteger id : messageIds) {
-//
-//            List<Comment> commentList = commentRepository.findByMessageId(id);
-//
-//            if (commentList.isEmpty()) {
-//                continue;
-//            }
-//
-//            commentListsForMessages.add(commentList);
-//        }
-//
-//        return commentListsForMessages;
-//    }
+    
     public List<Comment> getComments(@PathVariable Long id) {
 
         return commentRepository.findByMessageId(id);
@@ -152,6 +116,12 @@ public class MessageService {
         comment.getLikes().add(currentAccount);
         commentRepository.save(comment);
     }
+    
+    public Integer getLikesForComments(@PathVariable Long id) {
+
+        return commentRepository.getLikesForComments(id);
+    }
+
 
     public void deleteComment(Long id, Long commentId) {
 

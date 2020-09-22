@@ -59,7 +59,7 @@
 
                                             <!--MESSAGE NUMBER OF LIKES-->
                                             <td th:id="${message.id}" class="pr-0 pl-md-2 pl-lg-3">
-                                                <span th:text="${messageService.getLikes(message.id)}">likes</span>
+                                                <span th:text="${messageService.getLikesForMessages(message.id)}">likes</span>
                                             </td>
 
                                             <!--MESSAGE LIKE BUTTON-->
@@ -97,66 +97,64 @@
                             <small class="text-muted">Showing only last 10 comments</small>
                         </div>
                         <div th:if="${message.comments.size() > 0}" th:each="comment : ${messageService.getComments(message.id)}">
-                                <!--<div th:if="${message.id == commentList.get(0).getMessage().getId()}" th:each="comment : ${commentList}">-->
-                                    <!--COMMENT HEADER-->
-                                    <div id="comment-header" class="row d-flex justify-content-end mb-0 pb-1 pt-4 pl-0">
-                                        <div class="col-10 col-md-9 col-lg-8 col-xl-7 px-0">
-                                            <table style="width: 100%;">
-                                                <tbody>
-                                                    <tr>
-                                                        <!--COMMENT PROFILE PICTURE-->
-                                                        <td style="width: 25px;">
-                                                            <img th:if="${comment.account.image == null}" th:src="@{/images/no_image.png}" width="100%"/>
-                                                            <img th:unless="${comment.account.image == null}" th:src="@{/profiles/{profile}/image(profile=${comment.account.profile})}" width="100%"/>
-                                                        </td>
+                            <!--COMMENT HEADER-->
+                            <div id="comment-header" class="row d-flex justify-content-end mb-0 pb-1 pt-4 pl-0">
+                                <div class="col-10 col-md-9 col-lg-8 col-xl-7 px-0">
+                                    <table style="width: 100%;">
+                                        <tbody>
+                                            <tr>
+                                                <!--COMMENT PROFILE PICTURE-->
+                                                <td style="width: 25px;">
+                                                    <img th:if="${comment.account.image == null}" th:src="@{/images/no_image.png}" width="100%"/>
+                                                    <img th:unless="${comment.account.image == null}" th:src="@{/profiles/{profile}/image(profile=${comment.account.profile})}" width="100%"/>
+                                                </td>
 
-                                                        <!--COMMENT SENDER-->
-                                                        <td class="pr-1">
-                                                            <a th:href="@{/profiles/{profile}/(profile = ${comment.account.profile})}" class="normalButton commentButton">
-                                                                <span th:text="${comment.account.name}">name</span>
-                                                            </a>
-                                                        </td>
+                                                <!--COMMENT SENDER-->
+                                                <td class="pr-1">
+                                                    <a th:href="@{/profiles/{profile}/(profile = ${comment.account.profile})}" class="normalButton commentButton">
+                                                        <span th:text="${comment.account.name}">name</span>
+                                                    </a>
+                                                </td>
 
-                                                        <!--COMMENT DATE-->
-                                                        <td>
-                                                            <small class="text-muted" th:text="'at ' + ${#temporals.format(comment.date, 'dd.MM.yyyy HH:mm')}">date</small>
-                                                        </td>
+                                                <!--COMMENT DATE-->
+                                                <td>
+                                                    <small class="text-muted" th:text="'at ' + ${#temporals.format(comment.date, 'dd.MM.yyyy HH:mm')}">date</small>
+                                                </td>
 
-                                                        <!--COMMENT NUMBER OF LIKES-->
-                                                        <td th:id="${comment.id}" class="pr-0 pl-md-2 pl-lg-3">
-                                                            <span th:text="${#lists.size(comment.likes)}">likes</span>
-                                                        </td>
+                                                <!--COMMENT NUMBER OF LIKES-->
+                                                <td th:id="${comment.id}" class="pr-0 pl-md-2 pl-lg-3">
+                                                    <span th:text="${messageService.getLikesForComments(comment.id)}">likes</span>
+                                                </td>
 
-                                                        <!--COMMENT LIKE-->
-                                                        <td class="pr-0 pr-xl-2">
-                                                            <form th:if="${comment.likes.contains(currentAccount)}" th:action="@{/messages/{id}/comments/{commentId}(msgPage = ${messagePage.number}, id = ${message.id}, commentId = ${comment.id})}" th:method="PUT">
-                                                                <button class="deleteButton commentButton" title="Remove like"><i class="fas fa-thumbs-down"></i></button>
-                                                            </form>
-                                                            <form th:unless="${comment.likes.contains(currentAccount)}" th:action="@{/messages/{id}/comments/{commentId}(msgPage = ${messagePage.number}, id = ${message.id}, commentId = ${comment.id})}" th:method="PUT">
-                                                                <button class="normalButton commentButton" title="Like"><i class="fas fa-thumbs-up"></i></button>
-                                                            </form>
-                                                        </td>
+                                                <!--COMMENT LIKE-->
+                                                <td class="pr-0 pr-xl-2">
+                                                    <form th:if="${comment.likes.contains(currentAccount)}" th:action="@{/messages/{id}/comments/{commentId}(msgPage = ${messagePage.number}, id = ${message.id}, commentId = ${comment.id})}" th:method="PUT">
+                                                        <button class="deleteButton commentButton" title="Remove like"><i class="fas fa-thumbs-down"></i></button>
+                                                    </form>
+                                                    <form th:unless="${comment.likes.contains(currentAccount)}" th:action="@{/messages/{id}/comments/{commentId}(msgPage = ${messagePage.number}, id = ${message.id}, commentId = ${comment.id})}" th:method="PUT">
+                                                        <button class="normalButton commentButton" title="Like"><i class="fas fa-thumbs-up"></i></button>
+                                                    </form>
+                                                </td>
 
-                                                        <!--COMMENT DELETE-->
-                                                        <td class="pl-0 pl-md-2 pl-lg-4">
-                                                            <form th:if="${currentAccount == comment.account}" th:action="@{/messages/{id}/comments/{commentId}(msgPage = ${messagePage.number}, id = ${message.id}, commentId = ${comment.id})}" th:method="DELETE">
-                                                                <button class="deleteButton commentButton pr-0" title="Delete comment"><i class="fas fa-minus-circle"></i></button>
-                                                            </form>
-                                                            <i th:unless="${currentAccount == comment.account}" class="fas fa-minus-circle" style="opacity: 0;"></i>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+                                                <!--COMMENT DELETE-->
+                                                <td class="pl-0 pl-md-2 pl-lg-4">
+                                                    <form th:if="${currentAccount == comment.account}" th:action="@{/messages/{id}/comments/{commentId}(msgPage = ${messagePage.number}, id = ${message.id}, commentId = ${comment.id})}" th:method="DELETE">
+                                                        <button class="deleteButton commentButton pr-0" title="Delete comment"><i class="fas fa-minus-circle"></i></button>
+                                                    </form>
+                                                    <i th:unless="${currentAccount == comment.account}" class="fas fa-minus-circle" style="opacity: 0;"></i>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
-                                    <!--COMMENT CONTENT-->
-                                    <div class="row d-flex justify-content-end mb-0 pb-1">
-                                        <div class="col-10 col-md-9 col-lg-8 col-xl-7 pl-1 pr-1 mb-0 comment-content">
-                                            <p class="forum-text" th:text="${comment.content}">comment content</p>
-                                        </div>
-                                    </div>
-                                <!--</div>-->
+                            <!--COMMENT CONTENT-->
+                            <div class="row d-flex justify-content-end mb-0 pb-1">
+                                <div class="col-10 col-md-9 col-lg-8 col-xl-7 pl-1 pr-1 mb-0 comment-content">
+                                    <p class="forum-text" th:text="${comment.content}">comment content</p>
+                                </div>
+                            </div>
                         </div>
 
                         <!--ADD COMMENT-->
