@@ -1,11 +1,13 @@
 package projekti.controller;
 
+import java.math.BigInteger;
 import projekti.service.MessageService;
 import projekti.service.AccountService;
 import projekti.domain.Message;
 import projekti.domain.Comment;
 import projekti.domain.Account;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -33,11 +35,12 @@ public class MessageController {
         Account currentAccount = accountService.getCurrentAccount();
 
         Page<Message> messagePage = messageService.getAllContactMessages(currentAccount, msgPage);
-        List<Page<Comment>> commentPagesForMessages = messageService.getAllMessageComments();
+//        List<List<Comment>> commentListsForMessages = messageService.getAllMessageComments();
         
         model.addAttribute("currentAccount", currentAccount);
         model.addAttribute("messagePage", messagePage);
-        model.addAttribute("commentPages", commentPagesForMessages);
+//        model.addAttribute("commentLists", commentListsForMessages);
+        model.addAttribute("messageService", messageService);
 
         return "messages";
     }

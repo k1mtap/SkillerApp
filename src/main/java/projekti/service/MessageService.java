@@ -7,12 +7,15 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import projekti.repository.CommentRepository;
 import projekti.repository.MessageRepository;
 
@@ -27,7 +30,6 @@ public class MessageService {
     private AccountService accountService;
 
 //  ====== MESSAGES ======    
-    
     public Message getOne(Long id) {
         return messageRepository.getOne(id);
     }
@@ -62,6 +64,26 @@ public class MessageService {
         messageRepository.save(message);
     }
 
+//    public List<Integer> getLikesForMessage() {
+//        
+//        List<Integer> likesForMessages = new ArrayList<>();
+//        List<BigInteger> messageIds = messageRepository.findAllContactMessagesIds(accountService.getCurrentAccount().getId());
+//        
+//        for (BigInteger id : messageIds) {
+//
+//            int likes = messageRepository.getLikesForMessage(id);
+//
+//            likesForMessages.add(likes);
+//        }
+//        
+//        return likesForMessages;
+//    }
+    
+    public Integer getLikes(@PathVariable Long id) {
+
+        return messageRepository.getLikesForMessage(id);
+    }
+
     @Transactional
     public void deleteMessage(Long id) {
 
@@ -77,26 +99,28 @@ public class MessageService {
     }
 
 //  ====== COMMENTS ======
-    
-    public List<Page<Comment>> getAllMessageComments() {
+//    public List<List<Comment>> getAllMessageComments() {
+//
+//
+//        List<List<Comment>> commentListsForMessages = new ArrayList<>();
+//        List<BigInteger> messageIds = messageRepository.findAllContactMessagesIds(accountService.getCurrentAccount().getId());
+//
+//        for (BigInteger id : messageIds) {
+//
+//            List<Comment> commentList = commentRepository.findByMessageId(id);
+//
+//            if (commentList.isEmpty()) {
+//                continue;
+//            }
+//
+//            commentListsForMessages.add(commentList);
+//        }
+//
+//        return commentListsForMessages;
+//    }
+    public List<Comment> getComments(@PathVariable Long id) {
 
-        Pageable pageable = PageRequest.of(0, 10);
-
-        List<Page<Comment>> commentPagesForMessages = new ArrayList<>();
-        List<BigInteger> messageIds = messageRepository.findAllContactMessagesIds(accountService.getCurrentAccount().getId());
-
-        for (BigInteger id : messageIds) {
-
-            Page<Comment> commentList = commentRepository.findByMessageId(id, pageable);
-
-            if (commentList.isEmpty()) {
-                continue;
-            }
-
-            commentPagesForMessages.add(commentList);
-        }
-
-        return commentPagesForMessages;
+        return commentRepository.findByMessageId(id);
     }
 
     public void addComment(Long id, String content) {
