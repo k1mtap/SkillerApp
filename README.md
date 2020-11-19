@@ -1,9 +1,9 @@
 # SkillerApp
-Course project
 
-Course project from https://web-palvelinohjelmointi-20.mooc.fi/
+Course project from https://web-palvelinohjelmointi-20.mooc.fi/ (Java, Spring Boot, Thymeleaf)
 
 Working version at Heroku:
+(Doesn't include Javascript at this point)
 
 https://skillerapp1.herokuapp.com/
 
