@@ -40,6 +40,10 @@ public class AccountService {
         Account currentUser = getByUsername(auth.getName());
         return currentUser;
     }
+    
+    public Boolean authorized(String profile) {
+        return getCurrentAccount().getProfile().equals(profile);
+    }
 
     public String getProfile(String profile) {
 

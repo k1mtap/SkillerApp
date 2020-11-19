@@ -25,11 +25,13 @@ public class ImageController {
     @PostMapping("/profiles/{profile}/image")
     public String addImage(@RequestParam("image") MultipartFile file, @PathVariable String profile) throws IOException {
 
-        if (file.getContentType().equals("image/png") || file.getContentType().equals("image/jpeg")) {
+        if (accountService.authorized(profile)) {
+            if (file.getContentType().equals("image/png") || file.getContentType().equals("image/jpeg")) {
 
-            imageService.addImage(file, profile);
+                imageService.addImage(file, profile);
 
-            return "redirect:/profiles/" + profile + "/skills";
+                return "redirect:/profiles/" + profile + "/skills";
+            }
         }
 
         return "redirect:/profiles/" + profile + "/skills";
@@ -38,7 +40,9 @@ public class ImageController {
     @DeleteMapping("/profiles/{profile}/image")
     public String deleteImage(@PathVariable String profile) throws IOException {
 
-        imageService.deleteImage(profile);
+        if (accountService.authorized(profile)) {
+            imageService.deleteImage(profile);
+        }
 
         return "redirect:/profiles/" + profile + "/skills";
     }

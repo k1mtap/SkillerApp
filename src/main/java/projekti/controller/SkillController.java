@@ -50,7 +50,9 @@ public class SkillController {
             return "edit";
         }
 
-        skillService.addSkill(skill);
+        if (accountService.authorized(profile)) {
+            skillService.addSkill(skill);
+        }
 
         return "redirect:/profiles/" + profile + "/skills";
     }
@@ -66,7 +68,9 @@ public class SkillController {
     @DeleteMapping("/profiles/{profile}/skills/{id}")
     public String deleteSkill(@PathVariable String profile, @PathVariable Long id) {
 
-        skillService.deleteSkill(id);
+        if (accountService.authorized(profile)) {
+            skillService.deleteSkill(id);
+        }
 
         return "redirect:/profiles/" + profile + "/skills";
     }

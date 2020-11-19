@@ -46,7 +46,9 @@ public class ContactrequestController {
     @GetMapping("/profiles/{profile}/contacts/{id}/approve_contact")
     public String approveContact(@PathVariable String profile, @PathVariable Long id) {
 
-        contactrequestService.approveContact(id);
+        if (accountService.authorized(profile)) {
+            contactrequestService.approveContact(id);
+        }
 
         return "redirect:/profiles/" + profile + "/contacts";
     }
@@ -54,7 +56,9 @@ public class ContactrequestController {
     @GetMapping("/profiles/{profile}/contacts/{id}/decline_contact")
     public String declineContact(@PathVariable String profile, @PathVariable Long id) {
 
-        contactrequestService.declineContact(id);
+        if (accountService.authorized(profile)) {
+            contactrequestService.declineContact(id);
+        }
 
         return "redirect:/profiles/" + profile + "/contacts";
     }
@@ -62,7 +66,9 @@ public class ContactrequestController {
     @DeleteMapping("/profiles/{profile}/contacts/{id}")
     public String deleteContact(@PathVariable String profile, @PathVariable Long id) {
 
-        contactrequestService.deleteContact(id);
+        if (accountService.authorized(profile)) {
+            contactrequestService.deleteContact(id);
+        }
 
         return "redirect:/profiles/" + profile + "/contacts";
     }
